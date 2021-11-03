@@ -4,10 +4,7 @@ package ir.mahdi.universityservice.domain.base;
 import ir.mahdi.universityservice.base.BaseEntity;
 import ir.mahdi.universityservice.domain.Role;
 import ir.mahdi.universityservice.domain.enumeration.Gender;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,6 +16,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+//@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

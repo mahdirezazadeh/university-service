@@ -1,8 +1,15 @@
 package ir.mahdi.universityservice.repository;
 
 import ir.mahdi.universityservice.domain.base.User;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findUserByUsername(String username);
+    @EntityGraph(attributePaths = {"roles", "roles.operations"})
+    Optional<User> findUserByUsername(String username);
+
+
+    <P> P findUserByUsername(String username, Class<P> clazz);
 }
