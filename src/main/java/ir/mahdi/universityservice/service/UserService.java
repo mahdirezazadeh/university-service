@@ -1,16 +1,11 @@
 package ir.mahdi.universityservice.service;
 
+import ir.mahdi.universityservice.base.service.BaseService;
 import ir.mahdi.universityservice.domain.base.User;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface UserService {
-    User save(User user);
-
-    List<User> findAll();
-
-    void delete(User user);
+public interface UserService extends BaseService<User, Long> {
 
     Optional<User> findByUsername(String username);
 
