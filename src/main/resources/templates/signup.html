@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/input.css}" rel="stylesheet"/>
+</head>
+
+<body class="container">
+<dev id="heading" class="container borderradius10px">
+    <dev id="loginbuttonDiv" class="container">
+        <a href="/sign-up" class="marginleft10px">
+            <button type="submit" class="btn ">Sign-Up</button>
+        </a>
+        <a href="/login" class="marginleft10px">
+            <button type="submit" class="btn">Login</button>
+        </a>
+    </dev>
+    <dev id="homebuttonDiv" class="container">
+        <a href="/home" class="marginright10px">
+            <button type="submit" class="btn btn-submit">home</button>
+        </a>
+    </dev>
+</dev>
+
+
+<dev id="mainDiv" class="container borderradius10px ">
+    <div class="wrapper">
+        <div class="btn-box">
+            <a href="/signup-student"><button class="btn btn-submit" type="submit">Signup Student</button></a>
+        </div>
+        <br>
+        <div class="btn-box">
+            <a href="/signup-teacher"><button class="btn btn-submit" type="submit">Signup Teacher</button></a>
+        </div>
+    </div>
+</dev>
+
+<footer class="container borderradius10px">
+    <span>©Airpicket</span>
+</footer>
+
+</body>
+
+</html>

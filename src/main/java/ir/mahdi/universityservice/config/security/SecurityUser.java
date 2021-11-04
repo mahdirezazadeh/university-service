@@ -28,19 +28,16 @@ public class SecurityUser implements UserDetails {
                                                 "ROLE_".concat(role.getName())
                                         )
                                 );
-                                if (role.getOperations() != null && !role.getOperations().isEmpty()) {
-                                    role.getOperations().forEach(operation ->
-                                            authorities.add(
-                                                    new SimpleGrantedAuthority(
-                                                            operation.getName()
-                                                    )
-                                            )
-                                    );
-                                }
                             }
                     );
         }
         return authorities;
+
+        /*return Collections.singletonList(
+                new SimpleGrantedAuthority(
+                        "read"
+                )
+        );*/
     }
 
     @Override

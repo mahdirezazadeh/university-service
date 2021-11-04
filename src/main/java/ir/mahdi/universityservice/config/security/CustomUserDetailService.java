@@ -22,7 +22,7 @@ public class CustomUserDetailService implements UserDetailsService {
         if (user.isPresent()) {
             return new SecurityUser(user.get());
         } else {
-            throw new UsernameNotFoundException("User by " + username + " not found!!!");
+            throw new UsernameNotFoundException("user " + username + " not found!!!");
         }
     }
 }

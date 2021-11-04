@@ -1,5 +1,7 @@
 package ir.mahdi.universityservice.config;
 
+import ir.mahdi.universityservice.config.security.RoleName;
+import ir.mahdi.universityservice.config.security.SecurityConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,28 +21,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests().anyRequest().authenticated();
-//        http.authorizeRequests().anyRequest().denyAll();
-/*        http.authorizeRequests().anyRequest()
-                .hasAuthority("delete");  */
-        /*http.authorizeRequests().anyRequest()
-                .hasAnyAuthority("delete", "read");*/
-/*        http.authorizeRequests().anyRequest()
-                .access("hasAnyAuthority('delete')");*/
-        /*http.authorizeRequests().anyRequest()
-                .hasRole("ROLE_ADMIN");*/
-
         http.authorizeRequests()
-                .mvcMatchers("/admin")
-                .hasRole("ADMIN")
-                .mvcMatchers("/manager")
-                .hasRole("MANAGER")
+                .mvcMatchers(SecurityConstant.getAdminPaths())
+                .hasRole(RoleName.ADMIN)
+                .mvcMatchers(SecurityConstant.getStudentPath())
+                .hasRole(RoleName.STUDENT)
+                .mvcMatchers(SecurityConstant.getTeacherPaths())
+                .hasRole(RoleName.TEACHER)
+                .mvcMatchers(SecurityConstant.getPermitAllUrls())
+                .permitAll()
                 .and()
                 .authorizeRequests()
                 .anyRequest()
                 .authenticated();
+//                .permitAll();
 
-        http.httpBasic();
-        http.formLogin();
+        http.formLogin()/*.loginPage("/login")*/;
+//        http.logout();
     }
 }

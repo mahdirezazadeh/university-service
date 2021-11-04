@@ -1,4 +1,4 @@
-package ir.mahdi.universityservice.config;
+package ir.mahdi.universityservice.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;

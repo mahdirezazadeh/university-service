@@ -1,11 +1,10 @@
 package ir.mahdi.universityservice.base.web.rest;
 
 import io.swagger.annotations.ApiOperation;
-import ir.maktab56.springbootexample.base.BaseDTO;
-import ir.maktab56.springbootexample.base.BaseEntity;
-import ir.maktab56.springbootexample.base.mapper.BaseMapper;
-import ir.maktab56.springbootexample.base.service.BaseService;
-import ir.maktab56.springbootexample.exception.BadInputRunTimeException;
+import ir.mahdi.universityservice.base.BaseDTO;
+import ir.mahdi.universityservice.base.BaseEntity;
+import ir.mahdi.universityservice.base.mapper.BaseMapper;
+import ir.mahdi.universityservice.base.service.BaseService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +29,9 @@ public class BaseRestFul<E extends BaseEntity<PK>, D extends BaseDTO<PK>, PK ext
     @GetMapping
     @ApiOperation(value = "get all entity")
     public ResponseEntity<List<D>> getAll() {
-
-        /*List<E> entityList = service.findAllNotSecure();
-        List<D> dtoList = mapper.convertListEntityToDTO(entityList);
-        return ResponseEntity.ok(dtoList);*/
-
         return ResponseEntity.ok(
                 mapper.convertListEntityToDTO(
-                        service.findAllNotSecure()
+                        service.findAll()
                 )
         );
     }
@@ -46,7 +40,7 @@ public class BaseRestFul<E extends BaseEntity<PK>, D extends BaseDTO<PK>, PK ext
     @ApiOperation(value = "get all entity")
     public ResponseEntity<Page<D>> getAll(Pageable pageable) {
 
-        Page<E> page = service.findAllNotSecure(pageable);
+        Page<E> page = service.findAll(pageable);
 
         /*return ResponseEntity.ok(
                 page.map(
@@ -66,7 +60,7 @@ public class BaseRestFul<E extends BaseEntity<PK>, D extends BaseDTO<PK>, PK ext
     @GetMapping("/{id}") /* /user/5 */
     @ApiOperation(value = "find by id")
     public ResponseEntity<D> findById(@PathVariable("id") PK id) {
-        Optional<E> optionalE = service.findByIdNotSecure(id);
+        Optional<E> optionalE = service.findById(id);
 
         /*if (optionalE.isPresent()) {
             return ResponseEntity.ok(
@@ -78,24 +72,24 @@ public class BaseRestFul<E extends BaseEntity<PK>, D extends BaseDTO<PK>, PK ext
             return ResponseEntity.notFound().build();
         }*/
 
-        /*return optionalE.map(e -> ResponseEntity.ok(
-                mapper.convertEntityToDTO(
-                        e
-                )
-        )).orElseGet(() -> ResponseEntity.notFound().build());*/
-
         return optionalE.map(e -> ResponseEntity.ok(
                 mapper.convertEntityToDTO(
                         e
                 )
-        )).orElseThrow(() -> new BadInputRunTimeException("entity not found!!!"));
+        )).orElseGet(() -> ResponseEntity.notFound().build());
+
+//        return optionalE.map(e -> ResponseEntity.ok(
+//                mapper.convertEntityToDTO(
+//                        e
+//                )
+//        )).orElseThrow(() -> new BadInputRunTimeException("entity not found!!!"));
 
     }
 
     @DeleteMapping("/{id}") /* /user/5 */
     @ApiOperation(value = "delete by id")
     public ResponseEntity<Void> delete(@PathVariable("id") PK id) {
-        service.deleteByIdNotSecure(id);
+        service.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
@@ -107,7 +101,7 @@ public class BaseRestFul<E extends BaseEntity<PK>, D extends BaseDTO<PK>, PK ext
             return ResponseEntity.badRequest().build();
         }
 
-        E entity = service.saveNotSecure(
+        E entity = service.save(
                 mapper.convertDTOToEntity(d)
         );
 
@@ -125,7 +119,7 @@ public class BaseRestFul<E extends BaseEntity<PK>, D extends BaseDTO<PK>, PK ext
             return ResponseEntity.badRequest().build();
         }
 
-        E entity = service.saveNotSecure(
+        E entity = service.save(
                 mapper.convertDTOToEntity(d)
         );
 
