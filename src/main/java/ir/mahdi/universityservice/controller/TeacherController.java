@@ -1,28 +1,23 @@
 package ir.mahdi.universityservice.controller;
 
-import ir.mahdi.universityservice.controller.mapper.UserToTeacher;
 import ir.mahdi.universityservice.domain.Teacher;
 import ir.mahdi.universityservice.service.TeacherService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+
+@AllArgsConstructor
 @Controller
 public class TeacherController {
 
     private final TeacherService teacherService;
 
-    private final UserToTeacher userToTeacher;
-
-    @Autowired
-    public TeacherController(TeacherService teacherService, UserToTeacher userToTeacher) {
-        this.teacherService = teacherService;
-        this.userToTeacher = userToTeacher;
-    }
-
+    private RoleController roleController;
 
     @GetMapping("/signup-teacher")
     public String getSignup(Teacher teacher) {
@@ -30,8 +25,11 @@ public class TeacherController {
     }
 
     @PostMapping("/signup-teacher")
-    public String save(Teacher teacher, BindingResult result, Model model) {
+    public String save(@Valid Teacher teacher, BindingResult result, Model model) {
+//        if(result.hasErrors())
+//            return "signup-teacher";
         if (teacherService.findByUsername(teacher.getUsername()).isEmpty()) {
+            teacher.getRoles().add(roleController.findByName("teacher"));
             teacherService.save(teacher);
             return "signup-successfully";
         }

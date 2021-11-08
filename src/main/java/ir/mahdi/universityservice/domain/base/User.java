@@ -4,9 +4,15 @@ package ir.mahdi.universityservice.domain.base;
 import ir.mahdi.universityservice.base.BaseEntity;
 import ir.mahdi.universityservice.domain.Role;
 import ir.mahdi.universityservice.domain.enumeration.Gender;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +22,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-//@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -36,16 +41,22 @@ public class User extends BaseEntity<Long> {
     private static final String IS_ACTIVE = "is_active";
     private static final String IS_CONFIRMED = "is_confirmed";
 
-    @Column(name = USERNAME)
+    @Column(name = USERNAME, unique = true, nullable = false)
+    @NotNull
+    @NotEmpty(message = "Username can not be empty!")
+    @NotBlank
     private String username;
 
-    @Column(name = PASSWORD)
+    @NotNull
+    @NotEmpty(message = "Username can not be empty!")
+    @NotBlank
+    @Column(name = PASSWORD, nullable = false)
     private String password;
 
-    @Column(name = FIRST_NAME)
+    @Column(name = FIRST_NAME, nullable = false)
     private String firstName;
 
-    @Column(name = LASTNAME)
+    @Column(name = LASTNAME, nullable = false)
     private String lastName;
 
     @Column(name = BIRTHDAY)
@@ -54,10 +65,13 @@ public class User extends BaseEntity<Long> {
     @Column(name = NATIONAL_CODE)
     private String nationalCode;
 
-    @Column(name = EMAIL)
+    @NotNull
+    @NotEmpty(message = "Username can not be empty!")
+    @NotBlank
+    @Column(name = EMAIL, unique = true, nullable = false)
     private String email;
 
-    @Column(name = PHONE_NUMBER)
+    @Column(name = PHONE_NUMBER, unique = true, nullable = false)
     private String phoneNumber;
 
     @Column(name = GENDER)
@@ -65,11 +79,15 @@ public class User extends BaseEntity<Long> {
     private Gender gender;
 
     @Column(name = IS_ACTIVE)
-    private boolean isActive;
+    private boolean isActive = true;
 
     @Column(name = IS_CONFIRMED)
-    private boolean isConfirmed;
+    private boolean isConfirmed = false;
 
     @ManyToMany
     private Set<Role> roles = new HashSet<>();
+
+    public String getFullName() {
+        return firstName.concat(" ").concat(lastName);
+    }
 }

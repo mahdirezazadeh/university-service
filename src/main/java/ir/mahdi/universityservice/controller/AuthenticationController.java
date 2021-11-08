@@ -23,6 +23,4 @@ public class AuthenticationController {
     public String signUpGet(User user) {
         return "signup";
     }
-
-
 }

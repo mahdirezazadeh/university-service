@@ -1,0 +1,67 @@
+.ticketA {
+    width: 98.5%;
+    height: max-content;
+    background-color: rgba(226, 226, 226, 0.596);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    /* cursor: pointer; */
+    text-decoration: none;
+}
+
+.ticketFromTo {
+    width: 30%;
+    height: 105px;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-left: 15px;
+}
+
+.fromTo {
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.ticketDateTime {
+    padding-top: 10px;
+    width: 30%;
+    height: 95px;
+    flex-direction: column;
+    align-items: center;
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.ticketPrice {
+    width: 30%;
+    height: 105px;
+    padding-right: 15px;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.ticketPrice > div {
+    flex-direction: row;
+    align-items: flex-end;
+
+}
+
+.ticketPriceSpan {
+    font-size: 19pt;
+    font-weight: bold;
+}
+
+.numberleft {
+    color: red;
+    font-size: 15pt;
+    font-weight: bold;
+}
+
+a:-webkit-any-link {
+    color: black;
+}
+
+.user {
+    font-style: italic;
+}

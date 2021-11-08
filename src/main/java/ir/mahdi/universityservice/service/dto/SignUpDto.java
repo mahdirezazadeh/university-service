@@ -7,23 +7,41 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 
 @Getter
 @Setter
-//@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpDto extends BaseDTO<Long> {
+
+    @NotNull
+    @NotEmpty(message = "Username can not be empty!")
+    @NotBlank
     private String username;
+
+    @NotNull
+    @NotEmpty(message = "Password can not be empty!")
+    @NotBlank
     private String password;
-    private String password2;
+
+//    @NotNull
+//    @NotEmpty(message = "Password Confirmation can not be empty!")
+//    @NotBlank
+//    private String password2;
+
+    @NotNull
+    @NotEmpty(message = "Email can not be empty!")
+    @NotBlank
+    private String email;
     private String firstName;
     private String lastName;
     private Date birthday;
     private String nationalCode;
-    private String email;
     private String phoneNumber;
     private Gender gender;
 }

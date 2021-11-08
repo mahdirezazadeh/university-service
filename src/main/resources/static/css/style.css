@@ -79,3 +79,8 @@ footer label {
 .marginright10px {
     margin-right: 10px;
 }
+
+.SuccessfulSignUp {
+    font-size: 20px;
+    font-weight: bold;
+}

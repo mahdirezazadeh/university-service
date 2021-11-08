@@ -2,15 +2,12 @@ package ir.mahdi.universityservice.service.impl;
 
 import ir.mahdi.universityservice.base.service.impl.BaseServiceImpl;
 import ir.mahdi.universityservice.domain.base.User;
-import ir.mahdi.universityservice.domain.enumeration.Gender;
 import ir.mahdi.universityservice.repository.UserRepository;
 import ir.mahdi.universityservice.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +49,33 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     @Override
     public <P> P findUserByUsername(String username, Class<P> clazz) {
         return repository.findUserByUsername(username, clazz);
+    }
+
+    @Override
+    @Transactional
+    public boolean activateUserById(Long id) {
+        Optional<User> user = this.findById(id);
+        if (user.isPresent() && !user.get().isConfirmed()) {
+            User user1 = user.get();
+            user1.setConfirmed(true);
+            save(user1);
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    @Transactional
+    public boolean deactivateUserById(Long id) {
+        Optional<User> user = this.findById(id);
+        if (user.isPresent() && user.get().isConfirmed()) {
+            User user1 = user.get();
+            user1.setConfirmed(false);
+            save(user1);
+            return true;
+        }
+        return false;
     }
 
 }
