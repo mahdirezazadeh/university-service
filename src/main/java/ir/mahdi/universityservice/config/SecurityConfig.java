@@ -33,10 +33,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .anyRequest()
-                .authenticated();
-//                .permitAll();
+//                .authenticated();
+                .permitAll();
 
-        http.formLogin()/*.loginPage("/login")*/;
+        http.formLogin().loginPage("/login");
 //        http.logout();
     }
 }
