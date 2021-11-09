@@ -25,10 +25,10 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = User.USER_TYPE)
+//@DiscriminatorColumn(name = User.USER_TYPE)
 public class User extends BaseEntity<Long> {
     static final String TABLE_NAME = "user_table";
-    static final String USER_TYPE = "user_type";
+    private static final String USER_TYPE = "user_type";
     private static final String GENDER = "gender";
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
@@ -41,10 +41,13 @@ public class User extends BaseEntity<Long> {
     private static final String IS_ACTIVE = "is_active";
     private static final String IS_CONFIRMED = "is_confirmed";
 
-    @Column(name = USERNAME, unique = true, nullable = false)
+    @Column(name = USER_TYPE)
+    private String userType;
+
     @NotNull
     @NotEmpty(message = "Username can not be empty!")
     @NotBlank
+    @Column(name = USERNAME, unique = true, nullable = false)
     private String username;
 
     @NotNull

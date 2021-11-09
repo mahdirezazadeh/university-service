@@ -1,7 +1,10 @@
 package ir.mahdi.universityservice.domain;
 
 import ir.mahdi.universityservice.domain.base.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -12,7 +15,6 @@ import javax.persistence.Entity;
 //@Table(name = Teacher.TABLE_NAME)
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @DiscriminatorValue(value = Teacher.DISCRIMINATOR_VALUE)
@@ -23,4 +25,8 @@ public class Teacher extends User {
 
     @Column(name = TEACHER_CODE)
     private String teacherCode;
+
+    public Teacher() {
+        setUserType("Teacher");
+    }
 }

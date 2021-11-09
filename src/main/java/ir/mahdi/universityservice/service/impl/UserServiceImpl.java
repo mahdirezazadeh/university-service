@@ -78,4 +78,10 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
         return false;
     }
 
+//    @Override
+//    public List<User> findByUserSearchDTO(UserSearchDTO userSearch) {
+//
+//        return repository.findByUserSearchDTO(userSearch);
+//    }
+
 }

@@ -1,7 +1,10 @@
 package ir.mahdi.universityservice.domain;
 
 import ir.mahdi.universityservice.domain.base.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -15,7 +18,6 @@ import java.util.Set;
 //@Table(name = Student.TABLE_NAME)
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @DiscriminatorValue(value = Student.DISCRIMINATOR_VALUE)
@@ -30,4 +32,8 @@ public class Student extends User {
     @ManyToMany
     @Builder.Default
     private Set<Course> courses = new HashSet<>();
+
+    public Student() {
+        setUserType("Student");
+    }
 }

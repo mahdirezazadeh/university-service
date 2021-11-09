@@ -12,4 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     <P> P findUserByUsername(String username, Class<P> clazz);
+
+//    @Query(value = "select from User u where u.username = :userSearch.username and u.isConfirmed=userSearch.isConfirmed and u.is")
+//    List<User> findByUserSearchDTO(UserSearchDTO userSearch);
 }

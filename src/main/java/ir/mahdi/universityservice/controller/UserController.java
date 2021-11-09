@@ -25,13 +25,14 @@ public class UserController {
         return userService.findAll();
     }
 
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasAuthority('userConfirmation')")
     @PostMapping("/user/confirm")
     public boolean activateUserById(int id) {
         return userService.activateUserById((long) id);
     }
 
     //    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasAuthority('userConfirmation')")
     @PostMapping("/user/disprove")
     public boolean deactivateUserById(int id) {
         return userService.deactivateUserById((long) id);

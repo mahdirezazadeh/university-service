@@ -14,4 +14,6 @@ public interface UserService extends BaseService<User, Long> {
     boolean activateUserById(Long id);
 
     boolean deactivateUserById(Long id);
+
+//    List<User> findByUserSearchDTO(UserSearchDTO userSearch);
 }

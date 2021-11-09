@@ -23,15 +23,15 @@ public class CourseServiceImpl extends BaseServiceImpl<Course, Long, CourseRepos
 
     @Override
     @Transactional
-    public Course save(Course admin) {
-        return super.save(admin);
+    public Course save(Course course) {
+        return super.save(course);
     }
 
 
     @Override
     @Transactional
-    public List<Course> saveAll(Collection<Course> admins) {
-        return super.saveAll(admins);
+    public List<Course> saveAll(Collection<Course> courses) {
+        return super.saveAll(courses);
     }
 
     @Override
