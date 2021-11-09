@@ -15,7 +15,7 @@ public class SecurityConstant {
 
     public static String[] getAdminPaths() {
         return new String[]{
-                "/admin", "/admin/**", "/teacher/**", ":8080/user/confirm-user", "/user/confirm-user", "/user/confirm-user**", "/user/confirm-user/", "/user/confirm-user**"
+                "/admin", "/admin/**", "/teacher/**", "/user/confirm-user", "/user/disprove"
         };
     }
 

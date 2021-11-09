@@ -52,10 +52,17 @@
     font-weight: bold;
 }
 
-.numberleft {
+.pending {
     color: red;
     font-size: 15pt;
     font-weight: bold;
+}
+
+.pending-hidden {
+    color: red;
+    font-size: 15pt;
+    font-weight: bold;
+    visibility: hidden;
 }
 
 a:-webkit-any-link {

@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Document</title>
+    <title>Users Activation</title>
+    <meta th:content="${_csrf.token}" th:name="_csrf"/>
+    <meta th:content="${_csrf.headerName}" th:name="_csrf_header"/>
     <link rel="stylesheet" th:href="@{/css/ticketStyle.css}"/>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
     <link rel="stylesheet" th:href="@{/css/filter.css}"/>
@@ -40,7 +42,7 @@
     <form action="" class="container" id="filterDiv" method="get">
         <div class="container filterbuttonsDiv">
             <label for="UserType">User Type</label>
-            <select class=" selectSec" id="UserType" name="UserType">
+            <select class="selectSec" id="UserType" name="UserType">
                 <option class="" value=""></option>
                 <option class="" value="teacher">teacher</option>
                 <option class="" value="student">student</option>
@@ -50,17 +52,12 @@
 
         <div class="container filterbuttonsDiv">
             <label for="UserConfirmed">Confirmation Status</label>
-            <select class=" selectSec" id="UserConfirmed" name="UserConfirmed">
+            <select class="selectSec" id="UserConfirmed" name="UserConfirmed">
                 <option class="" value=""></option>
-                <option class="" value="Active">Active</option>
-                <option class="" value="inactive">Inactive</option>
+                <option class="" value="true">Active</option>
+                <option class="" value="false">Inactive</option>
             </select>
         </div>
-
-        <!--            <div class="container filterbuttonsDiv">-->
-        <!--                <label for="flightDate">Flight Date</label>-->
-        <!--                <input class=" selectSec" type="date" name="flightDate" id="flightDate">-->
-        <!--            </div>-->
         <div class="container filterbuttonsDiv">
             <label>&nbsp;</label>
             <input class="btn btn-submit selectSec" type="button" value="filter">
@@ -84,36 +81,27 @@
         </dev>
 
         <dev class="container ticketPrice">
-                <span class="numberleft" th:if="${!user.isConfirmed()}">
-                    Pending
-                </span>
-            <span class="numberleft" th:if="${user.isConfirmed()}">
-                <!-- &nbsp; -->
-                </span>
+            <span class="pending" th:id="${'pending'+user.getId()}" th:if="${!user.isConfirmed()}">
+                Pending
+            </span>
+            <span class="pending-hidden" th:id="${'pending'+user.getId()}" th:if="${user.isConfirmed()}">
+                 Pending
+            </span>
             <div class="container" th:switch="${user.isConfirmed()}">
-                <!-- <span class="ticketbeforePrice"> $250</span>
-                <span> &nbsp;&nbsp;&nbsp;</span> -->
-                <!-- <span class="ticketPriceSpan">
-                    Activate!
-                </span> -->
-                <!--                    <form th:case="false" method="post" action="/user/confirm-user">-->
-                <!--                        <input type="hidden" name="id" th:value="${user.getId()}">-->
-                <!--                        <input type="submit" class="btn btn-submit selectSec activateBut" value="Activate">-->
                 <input class="btn btn-submit selectSec activateBut" th:case="false" th:id="${'act'+user.getId()}"
                        type="button" value="Activate">
-                <input class="btn btn-submit selectSec DisactivateBut" th:case="true" th:id="${'dac'+user.getId()}"
+                <input class="btn btn-submit selectSec DeactivateBut" th:case="true" th:id="${'dac'+user.getId()}"
                        type="button" value="Deactivate">
-                <!--                    </form>-->
 
             </div>
             <div></div>
             <div></div>
         </dev>
     </div>
-
-    <footer class="container borderradius10px">
-        <label>©Airpicket</label>
-    </footer>
+</dev>
+<footer class="container borderradius10px">
+    <label>©Airpicket</label>
+</footer>
 
 </body>
 

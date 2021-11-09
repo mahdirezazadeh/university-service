@@ -3,6 +3,7 @@ package ir.mahdi.universityservice.controller;
 import ir.mahdi.universityservice.domain.base.User;
 import ir.mahdi.universityservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,20 +19,20 @@ public class UserController {
         this.userService = userService;
     }
 
-    //    @Secured("admin")
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/users-list")
     public List<User> getAllUsers() {
         return userService.findAll();
     }
 
-    //    @Secured("admin")
-    @PostMapping("/user/confirm-user")
+    @PreAuthorize("hasRole('admin')")
+    @PostMapping("/user/confirm")
     public boolean activateUserById(int id) {
         return userService.activateUserById((long) id);
     }
 
-    //    @Secured("admin")
-    @PostMapping("/user/unconfirm-user")
+    //    @PreAuthorize("hasRole('admin')")
+    @PostMapping("/user/disprove")
     public boolean deactivateUserById(int id) {
         return userService.deactivateUserById((long) id);
     }

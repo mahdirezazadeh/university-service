@@ -1,35 +1,53 @@
 $(document).ready(function () {
     $('.activateBut').click(function () {
-        console.log($(this).attr("id").substring(3));
-        var userId = $(this).attr("id").substring(3);
-        // $.ajax({
-        //     uri: `http://localhost:8080/user/confirm-user/`,
-        //     type: "put",
-        //     // contentType: 'application/json',
-        //     // data: JSON.stringify({id: userId}),
-        //     data: {id: userId},
-        //     success: function (response){
-        //         $(this).css("display", "none");
-        //         $(`#dac${userId}`).css("display", "block");
-        //     },
-        //     fail: function (err){
-        //         alert(err)
-        //     }
-        $.post(
-            `http://localhost:8080/user/confirm-user`,
-            {
+        let userId = $(this).attr("id").substring(3);
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            type: 'POST',
+            url: `http://localhost:8080/user/confirm`,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            data: {
                 id: userId
             },
-            function (data, status) {
-                alert("Data: " + data + "\nStatus: " + status);
+            success: function () {
+                $(`#act${userId}`)
+                    .attr('value', "Deactivate")
+                    .attr('class', 'btn btn-submit selectSec DeactivateBut')/*
+                    .attr('id', `dac${userId}`)*/;
+
+                $(`#pending${userId}`)
+                    .attr('class', 'pending-hidden');
             }
-        );
+        });
+    });
 
-    })
+    $('.DeactivateBut').click(function () {
+        let userId = $(this).attr("id").substring(3);
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            type: 'POST',
+            url: `http://localhost:8080/user/disprove`,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            data: {
+                id: userId
+            },
+            success: function () {
+                $(`#dac${userId}`)
+                    .attr('value', "Activate")
+                    .attr('class', 'btn btn-submit selectSec activateBut')/*
+                    .attr('id', `act${userId}`)*/;
 
-    $('.DisactivateBut').click(function (data) {
-        console.log($(this).attr("id").substring(3));
-    })
+                $(`#pending${userId}`)
+                    .attr('class', 'pending');
+            }
+        });
+    });
 })
 
 
