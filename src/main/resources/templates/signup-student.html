@@ -34,20 +34,20 @@
         <form class="form" th:action="@{/signup-student}" th:object="${student}" method="post">
             <h1 class="formh1">Sign-Up As Student</h1>
             <hr class="formhrsep"/>
-            <!--            <div class="group">-->
-            <!--                <input class="input" id="firstName" required="required" th:field="*{firstName}" type="text"/><span-->
-            <!--                    class="highlight"></span><span class="bar"></span>-->
-            <!--                <label class="label">First Name</label>-->
-            <!--                <p th:each="error : ${#fields.errors('firstName')}"-->
-            <!--                   th:text="${error}">Validation error</p>-->
-            <!--            </div>-->
-            <!--            <div class="group">-->
-            <!--                <input class="input" id="lastName" required="required" th:field="*{lastName}" type="text"/><span-->
-            <!--                    class="highlight"></span><span class="bar"></span>-->
-            <!--                <label class="label">Last Name</label>-->
-            <!--                <p th:each="error : ${#fields.errors('lastName')}"-->
-            <!--                   th:text="${error}">Validation error</p>-->
-            <!--            </div>-->
+            <div class="group">
+                <input class="input" id="firstName" required="required" th:field="*{firstName}" type="text"/><span
+                    class="highlight"></span><span class="bar"></span>
+                <label class="label">First Name</label>
+                <p th:each="error : ${#fields.errors('firstName')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+            <div class="group">
+                <input class="input" id="lastName" required="required" th:field="*{lastName}" type="text"/><span
+                    class="highlight"></span><span class="bar"></span>
+                <label class="label">Last Name</label>
+                <p th:each="error : ${#fields.errors('lastName')}"
+                   th:text="${error}">Validation error</p>
+            </div>
             <div class="group">
                 <input type="text" th:field="*{username}" id="username" class="input" required="required"/><span
                     class="highlight"></span><span class="bar"></span>

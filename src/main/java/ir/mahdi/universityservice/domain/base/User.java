@@ -74,6 +74,10 @@ public class User extends BaseEntity<Long> {
     @Column(name = EMAIL, unique = true, nullable = false)
     private String email;
 
+
+    @NotNull
+    @NotEmpty(message = "Phone Number can not be empty!")
+    @NotBlank
     @Column(name = PHONE_NUMBER, unique = true, nullable = false)
     private String phoneNumber;
 

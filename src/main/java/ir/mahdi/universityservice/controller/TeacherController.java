@@ -26,8 +26,8 @@ public class TeacherController {
 
     @PostMapping("/signup-teacher")
     public String save(@Valid Teacher teacher, BindingResult result, Model model) {
-//        if(result.hasErrors())
-//            return "signup-teacher";
+        if (result.hasErrors())
+            return "signup-teacher";
         if (teacherService.findByUsername(teacher.getUsername()).isEmpty()) {
             teacher.getRoles().add(roleController.findByName("teacher"));
             teacherService.save(teacher);

@@ -1,7 +1,6 @@
 package ir.mahdi.universityservice.controller;
 
 import ir.mahdi.universityservice.domain.Student;
-import ir.mahdi.universityservice.mapper.SignUpDtoMapperToStudent;
 import ir.mahdi.universityservice.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,10 +18,6 @@ public class StudentController {
 
     private final StudentService studentService;
 
-//    private final UserToStudent userToStudent;
-
-    private final SignUpDtoMapperToStudent mapperToStudent;
-
     private RoleController roleController;
 
 
@@ -34,8 +29,8 @@ public class StudentController {
     @PostMapping("/signup-student")
     public String save(@ModelAttribute("student") @Valid Student student,
                        BindingResult result, Errors errors) {
-//        if(result.hasErrors())
-//            return "signup-student";
+        if (result.hasErrors())
+            return "signup-student";
         if (studentService.findByUsername(student.getUsername()).isEmpty()) {
             student.getRoles().add(roleController.findByName("student"));
             studentService.save(student);
