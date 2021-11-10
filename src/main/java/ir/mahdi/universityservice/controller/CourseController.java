@@ -1,32 +1,44 @@
 package ir.mahdi.universityservice.controller;
 
 import ir.mahdi.universityservice.domain.Course;
+import ir.mahdi.universityservice.mapper.CourseMapperToCourseDTO;
 import ir.mahdi.universityservice.service.CourseService;
-import lombok.AllArgsConstructor;
-import org.springframework.validation.Errors;
+import ir.mahdi.universityservice.service.dto.CourseDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.ParseException;
 
-@AllArgsConstructor
-@RestController
+@RequiredArgsConstructor
+@Controller
 public class CourseController {
 
-    private CourseService courseService;
+    private final CourseService courseService;
+    private final CourseMapperToCourseDTO mapperToCourseDTO;
 
-    @GetMapping("/create-course")
-    public String createCourse(Course course) {
+    @GetMapping("/course/create")
+    public String createCourse(@ModelAttribute("course") CourseDTO course) {
         return "create-course";
     }
 
-    @PostMapping("/create-course")
-    public String addCourse(@ModelAttribute("course") @Valid Course course,
-                            HttpServletRequest request, Errors errors) {
-        courseService.save(course);
-        return "create-course";
+    @PostMapping("/course/create")
+    public String addCourse(@ModelAttribute("course") @Valid CourseDTO courseDTO,
+                            BindingResult result) {
+        if (result.hasErrors())
+            return "create-course";
+        try {
+            Course course = mapperToCourseDTO.convertDTOToCourse(courseDTO);
+            courseService.save(course);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "course-list";
     }
+
+//    public String courseList()
 }
