@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Exam</title>
+    <!--    <link href="/static/css/style.css" rel="stylesheet">-->
+    <!--    <link href="/static/css/input.css" rel="stylesheet">-->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/input.css}"/>
+</head>
+<body class="container">
+<dev class="container borderradius10px" id="heading">
+    <dev class="container" id="loginbuttonDiv">
+        <a class="marginleft10px" href="/sign-up">
+            <button class="btn" type="submit">Sign-Up</button>
+        </a>
+        <a class="marginleft10px" href="/login">
+            <button class="btn" type="submit">Login</button>
+        </a>
+    </dev>
+    <dev class="container" id="homebuttonDiv">
+        <a class="marginright10px" href="/home">
+            <button class="btn btn-submit" type="submit">home</button>
+        </a>
+    </dev>
+</dev>
+
+
+<dev class="container borderradius10px " id="mainDiv">
+
+    <div class="wrapper">
+        <form class="form" method="POST" th:action="@{/exam/create}" th:object="${exam}">
+            <h1 class="formh1">Create Exam</h1>
+            <hr class="formhrsep"/>
+            <input name="courseId" th:value="${courseId}" type="hidden">
+            <div class="group">
+                <input class="input" id="title" required="required" th:field="*{title}" type="text"/><span
+                    class="highlight"></span><span class="bar"></span>
+                <label class="label">Title</label>
+                <p th:each="error : ${#fields.errors('title')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+            <div class="group">
+                <input class="input" id="startDate" required="required" th:field="*{description}" type="text"/><span
+                    class="highlight"></span><span class="bar"></span>
+                <label class="label">Description</label>
+                <p th:each="error : ${#fields.errors('description')}"
+                   th:text="${error}">Description</p>
+            </div>
+            <div class="group">
+                <input class="input" id="endDate" required="required" th:field="*{duration}" type="number"/><span
+                    class="highlight"></span><span class="bar"></span>
+                <label class="label">Duration</label>
+            </div>
+            <p th:each="error : ${#fields.errors('duration')}"
+               th:text="${error}">Validation error</p>
+            <div class="btn-box">
+                <button class="btn btn-submit" type="submit">submit</button>
+            </div>
+        </form>
+    </div>
+</dev>
+<footer class="container borderradius10px">
+    <span>©Airpicket</span>
+</footer>
+
+</body>
+</html>

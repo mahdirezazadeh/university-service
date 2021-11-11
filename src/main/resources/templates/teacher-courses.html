@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Courses List</title>
+    <link rel="stylesheet" th:href="@{/css/ticketStyle.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/filter.css}"/>
+    <link rel="stylesheet" th:href="@{/css/input.css}"/>
+    <link href="/static/css/ticketStyle.css" rel="stylesheet"/>
+    <link href="/static/css/style.css" rel="stylesheet"/>
+    <link href="/static/css/filter.css" rel="stylesheet"/>
+    <link href="/static/css/input.css" rel="stylesheet"/>
+    <!--    <script language="JavaScript" type="text/javascript"  th:src="@{/js/jquery-3.6.0.min.js}"></script>-->
+    <script
+            crossorigin="anonymous"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script language="JavaScript" th:src="@{/js/main.js}" type="text/javascript"></script>
+</head>
+
+<body class="container">
+<dev class="container borderradius10px" id="heading">
+    <dev class="container" id="loginbuttonDiv">
+        <a class="marginleft10px" href="/sign-up">
+            <button class="btn" type="submit">Sign-Up</button>
+        </a>
+        <a class="marginleft10px" href="/login">
+            <button class="btn" type="submit">Login</button>
+        </a>
+    </dev>
+    <dev class="container" id="homebuttonDiv">
+        <a class="marginright10px" href="/">
+            <button class="btn btn-submit" type="submit">home</button>
+        </a>
+    </dev>
+</dev>
+
+
+<dev class="container borderradius10px " id="mainDiv">
+
+    <h1 class="formh1">Courses List</h1>
+
+    <hr class="hr">
+
+    <a class="container ticketPointer borderradius10px" th:each="course: ${courses}"
+       th:href="${'/teacher/course?id='+course.getId()}">
+        <dev class="container courseInfo">
+
+                <span class="fromTo" th:text="${'id: '+course.getId()}">
+                </span>
+            <span class="fromTo user" th:text="${'title: '+course.getTitle()}"></span>
+        </dev>
+
+        <dev class="container ticketDateTime">
+            <span th:text="${'starts on: '+course.getStartDate().toString().substring(0, 10)}"></span>
+            <span th:text="${'ends on: '+course.getEndDate().toString().substring(0, 10)}"></span>
+        </dev>
+    </a>
+</dev>
+<footer class="container borderradius10px">
+    <label>©Unimak</label>
+</footer>
+
+</body>
+
+</html>

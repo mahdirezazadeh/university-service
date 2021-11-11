@@ -20,6 +20,27 @@ $(document).ready(function () {
         });
     });
 
+    $('input[name="trashcan"]').click(function () {
+        let examId = $(this).attr("id")
+        console.log(examId)
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            type: 'POST',
+            url: `http://localhost:8080/exam/delete`,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            data: {
+                examId: examId
+            },
+            success: function () {
+                remove($(`#exam${examId}`));
+                console.log("exam deleted!");
+            }
+        });
+    });
+
 
 })
 

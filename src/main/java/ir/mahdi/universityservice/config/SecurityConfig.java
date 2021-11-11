@@ -1,6 +1,5 @@
 package ir.mahdi.universityservice.config;
 
-import ir.mahdi.universityservice.config.security.RoleName;
 import ir.mahdi.universityservice.config.security.SecurityConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,12 +21,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers(SecurityConstant.getAdminPaths())
-                .hasRole(RoleName.ADMIN)
-                .mvcMatchers(SecurityConstant.getStudentPath())
-                .hasRole(RoleName.STUDENT)
-                .mvcMatchers(SecurityConstant.getTeacherPaths())
-                .hasRole(RoleName.TEACHER)
+//                .mvcMatchers(SecurityConstant.getAdminPaths())
+//                .hasRole(RoleName.ADMIN)
+//                .mvcMatchers(SecurityConstant.getStudentPath())
+//                .hasRole(RoleName.STUDENT)
+//                .mvcMatchers(SecurityConstant.getTeacherPaths())
+//                .hasRole(RoleName.TEACHER)
                 .mvcMatchers(SecurityConstant.getPermitAllUrls())
                 .permitAll()
                 .and()

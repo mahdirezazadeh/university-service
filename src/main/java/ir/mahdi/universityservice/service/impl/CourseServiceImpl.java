@@ -2,6 +2,7 @@ package ir.mahdi.universityservice.service.impl;
 
 import ir.mahdi.universityservice.base.service.impl.BaseServiceImpl;
 import ir.mahdi.universityservice.domain.Course;
+import ir.mahdi.universityservice.domain.Teacher;
 import ir.mahdi.universityservice.repository.CourseRepository;
 import ir.mahdi.universityservice.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,10 @@ public class CourseServiceImpl extends BaseServiceImpl<Course, Long, CourseRepos
         super.deleteById(id);
     }
 
+    @Override
+    @Transactional
+    public List<Course> findCoursesByTeacher(Teacher teacher) {
+        return repository.findCourseByTeacher(teacher);
+    }
 
 }

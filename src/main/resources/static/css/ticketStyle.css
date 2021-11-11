@@ -32,6 +32,18 @@
     /*text-decoration: none;*/
 }
 
+.course2 {
+    width: 98.5%;
+    height: 200px;
+    background-color: rgba(226, 226, 226, 0.596);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    flex-direction: column;
+    align-items: center;
+    /*justify-content: space-between;*/
+    /*text-decoration: none;*/
+}
+
 .width25pc {
     width: 23%;
     height: 50px;

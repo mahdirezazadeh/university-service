@@ -7,9 +7,11 @@ import ir.mahdi.universityservice.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -31,6 +33,18 @@ public class CourseRestController {
             return HttpStatus.ACCEPTED;
         }
         return HttpStatus.BAD_REQUEST;
+    }
+
+    @PreAuthorize("hasRole('teacher')")
+    @GetMapping("/teacher/courseByTeacher")
+    public List<Course> getCoursesByTeacher(Teacher teacher) {
+        return courseService.findCoursesByTeacher(teacher);
+    }
+
+    @PreAuthorize("hasRole('teacher')")
+    @GetMapping("/teacher/courseById")
+    public Optional<Course> getCourseById(long id) {
+        return courseService.findById(id);
     }
 }
 

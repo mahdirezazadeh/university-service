@@ -21,7 +21,7 @@ public class SecurityConstant {
 
     public static String[] getTeacherPaths() {
         return new String[]{
-                "/teacher", "/teacher/*"
+                "/teacher", "/teacher/**", "/teacher/course/list", "/teacher/courseById", "/teacher/course/list**", "/teacher/courseById**"
         };
     }
 

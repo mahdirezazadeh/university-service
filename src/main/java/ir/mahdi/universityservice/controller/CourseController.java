@@ -1,6 +1,7 @@
 package ir.mahdi.universityservice.controller;
 
 import ir.mahdi.universityservice.domain.Course;
+import ir.mahdi.universityservice.domain.Exam;
 import ir.mahdi.universityservice.domain.Teacher;
 import ir.mahdi.universityservice.mapper.CourseMapperToCourseDTO;
 import ir.mahdi.universityservice.service.CourseService;
@@ -90,4 +91,13 @@ public class CourseController {
         model.addAttribute("message", "Course does not exist!");
         return "error-page";
     }
+
+    @PreAuthorize("hasRole('teacher')")
+    @GetMapping("/course/add-exam")
+    public String addExam(@RequestParam long courseId, Model model, Exam exam) {
+        model.addAttribute("courseId", courseId);
+        return "add-exam";
+    }
+
+
 }
