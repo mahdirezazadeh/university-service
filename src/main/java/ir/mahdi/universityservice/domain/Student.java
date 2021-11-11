@@ -1,5 +1,6 @@
 package ir.mahdi.universityservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ir.mahdi.universityservice.domain.base.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,8 +30,9 @@ public class Student extends User {
     @Column(name = STUDENT_CODE)
     private String studentCode;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "students")
     @Builder.Default
+    @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 
     public Student() {

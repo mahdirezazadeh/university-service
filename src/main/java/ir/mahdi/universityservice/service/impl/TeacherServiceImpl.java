@@ -2,14 +2,12 @@ package ir.mahdi.universityservice.service.impl;
 
 import ir.mahdi.universityservice.base.service.impl.BaseServiceImpl;
 import ir.mahdi.universityservice.domain.Teacher;
-import ir.mahdi.universityservice.domain.enumeration.Gender;
 import ir.mahdi.universityservice.repository.TeacherRepository;
 import ir.mahdi.universityservice.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -51,5 +49,10 @@ public class TeacherServiceImpl extends BaseServiceImpl<Teacher, Long, TeacherRe
     @Override
     public <P> P findTeacherByUsername(String username, Class<P> clazz) {
         return repository.findTeacherByUsername(username, clazz);
+    }
+
+    @Override
+    public List<Teacher> findAvailableTeachers() {
+        return repository.findTeacherByActiveAndConfirmedAndDeleted(true, true, false);
     }
 }

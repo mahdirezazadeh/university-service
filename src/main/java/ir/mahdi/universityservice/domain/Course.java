@@ -33,7 +33,7 @@ public class Course extends BaseEntity<Long> {
     @ManyToOne
     private Teacher teacher;
 
-    @ElementCollection
+    @ManyToMany
     @Builder.Default
-    private Set<Long> studentIds = new HashSet<>();
+    private Set<Student> students = new HashSet<>();
 }

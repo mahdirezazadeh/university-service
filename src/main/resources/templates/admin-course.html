@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Edit Course</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/input.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ticketStyle.css}"/>
+    <!--    <link rel="stylesheet" href="/static/css/style.css"/>-->
+    <!--    <link rel="stylesheet" href="/static/css/input.css"/>-->
+    <!--    <link rel="stylesheet" href="/static/css/ticketStyle.css"/>-->
+</head>
+
+<body class="container">
+<dev class="container borderradius10px" id="heading">
+    <dev class="container" id="loginbuttonDiv">
+        <a class="marginleft10px" href="/sign-up">
+            <button class="btn" type="submit">Sign-Up</button>
+        </a>
+        <a class="marginleft10px" href="/login">
+            <button class="btn" type="submit">Login</button>
+        </a>
+    </dev>
+    <dev class="container" id="homebuttonDiv">
+        <a class="marginright10px" href="/home">
+            <button class="btn btn-submit" type="submit">home</button>
+        </a>
+    </dev>
+</dev>
+
+
+<dev class="container borderradius10px " id="mainDiv">
+
+    <h1 class="formh1" th:text="${course.getTitle()}">Course title</h1>
+
+    <hr class="hr">
+    <br>
+
+    <Div class="container course borderradius10px">
+        <dev class="container courseDateTime">
+            <span class="fromTo" th:if="${course.getTeacher() != null}"
+                  th:text="${'Teacher: '+course.getTeacher().getFullName()}">
+                teacher Name
+            </span>
+            <a class="marginleft10px" sec:authorize="hasRole('admin')"
+               th:href="${'/course/edit-teacher?courseId='+course.getId()}">
+                <button class="btn" type="submit">Edit Teacher</button>
+            </a>
+        </dev>
+
+        <dev class="container courseDateTime">
+            <span th:text="${'starts on: '+course.getStartDate().toString().substring(0, 10)}">start date: 2000/2/20</span>
+            <span th:text="${'ends on: '+course.getEndDate().toString().substring(0, 10)}">ends date: 2000/2/20</span>
+        </dev>
+
+        <dev class="container courseDateTime" sec:authorize="hasRole('admin')">
+            <a class="marginleft10px" th:href="${'/course/edit-students?courseId='+course.getId()}">
+                <button class="btn" type="submit">Edit Students</button>
+            </a>
+        </dev>
+    </Div>
+</dev>
+
+<footer class="container borderradius10px">
+    <label>©Unimak</label>
+</footer>
+
+</body>
+
+</html>

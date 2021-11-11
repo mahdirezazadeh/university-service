@@ -87,12 +87,17 @@
             <span class="pending-hidden" th:id="${'pending'+user.getId()}" th:if="${user.isConfirmed()}">
                  Pending
             </span>
-            <div class="container" th:switch="${user.isConfirmed()}">
-                <input class="btn btn-submit selectSec activateBut" th:case="false" th:id="${'act'+user.getId()}"
+            <div class="container" th:if="${user.isConfirmed()}">
+                <input class="btn btn-submit activate hidden" name="activateBut" th:id="${'act'+user.getId()}"
                        type="button" value="Activate">
-                <input class="btn btn-submit selectSec DeactivateBut" th:case="true" th:id="${'dac'+user.getId()}"
+                <input class="btn btn-submit activate" name="DeactivateBut" th:id="${'dac'+user.getId()}"
                        type="button" value="Deactivate">
-
+            </div>
+            <div class="container" th:if="${!user.isConfirmed()}">
+                <input class="btn btn-submit activate" name="activateBut" th:id="${'act'+user.getId()}"
+                       type="button" value="Activate">
+                <input class="btn btn-submit activate hidden" name="DeactivateBut" th:id="${'dac'+user.getId()}"
+                       type="button" value="Deactivate">
             </div>
             <div></div>
             <div></div>
