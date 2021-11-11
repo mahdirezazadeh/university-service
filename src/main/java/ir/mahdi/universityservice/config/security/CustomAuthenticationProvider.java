@@ -25,15 +25,16 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if (userDetails.isEnabled()) {
-
             if (passwordEncoder.matches(password, userDetails.getPassword())) {
-
-                return new UsernamePasswordAuthenticationToken(
-                        username,
-                        password,
-                        userDetails.getAuthorities()
-                );
-
+                if (userDetails.isAccountNonLocked()) {
+                    return new UsernamePasswordAuthenticationToken(
+                            username,
+                            password,
+                            userDetails.getAuthorities()
+                    );
+                } else {
+                    throw new LockedException("user is not activated by admin!\nwait to admin activate you!");
+                }
             } else {
                 throw new BadCredentialsException("wrong pass!!!");
             }
