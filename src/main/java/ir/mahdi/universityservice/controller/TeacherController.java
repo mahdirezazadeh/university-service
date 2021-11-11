@@ -17,7 +17,7 @@ public class TeacherController {
 
     private final TeacherService teacherService;
 
-    private RoleController roleController;
+    private final RoleController roleController;
 
     @GetMapping("/signup-teacher")
     public String getSignup(Teacher teacher) {
@@ -35,4 +35,5 @@ public class TeacherController {
         }
         return "signup-teacher";
     }
+
 }

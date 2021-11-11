@@ -20,6 +20,10 @@ public class StudentController {
 
     private RoleController roleController;
 
+//    public List<Student> getStudentsByCourseId(long id) {
+////        studentService.findStudentsBy
+//    }
+
 
     @GetMapping("/signup-student")
     public String getSignup(@ModelAttribute("student") Student student) {
@@ -38,22 +42,5 @@ public class StudentController {
         }
         return "signup-student";
     }
-
-//    @GetMapping("/signup-student")
-//    public String getSignup(@ModelAttribute("student") SignUpDto userDto) {
-//        return "signup-student";
-//    }
-//
-//    @PostMapping("/signup-student")
-//    public String save(@ModelAttribute("student") @Valid SignUpDto userDto,
-//                       HttpServletRequest request, Errors errors) {
-//        if (studentService.findByUsername(userDto.getUsername()).isEmpty()) {
-//            Student student = mapperToStudent.convertDTOToEntity(userDto);
-//            studentService.save(student);
-//            return "signup-successfully";
-//        }
-//        return "signup-student";
-//    }
-
 
 }
