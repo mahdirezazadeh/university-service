@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+    //js post function for choosing teacher
     $('input[name="teacherId"]').click(function () {
         let teacherId = $(this).attr("value")
         let courseId = $('input[name="courseIdd"]').attr("value");
@@ -20,6 +22,7 @@ $(document).ready(function () {
         });
     });
 
+    //js function for deleting exam
     $('input[name="trashcan"]').click(function () {
         let examId = $(this).attr("id")
         console.log(examId)
@@ -35,7 +38,7 @@ $(document).ready(function () {
                 examId: examId
             },
             success: function () {
-                remove($(`#exam${examId}`));
+                $(`#exam${examId}`).remove();
                 console.log("exam deleted!");
             }
         });

@@ -31,10 +31,19 @@ public class ExamController {
         return teacherController.getCourseById(courseId, model);
     }
 
+    //    TAHA
     @PreAuthorize("hasRole('teacher')")
     @GetMapping("/exam")
-    public String createExam(@RequestParam long id, Model model) {
+    public String createExam(@RequestParam long id, Model model, @ModelAttribute("examAfter") @Valid Exam examAfter) {
         model.addAttribute("exam", examService.findById(id).get());
         return "exam-edit-page";
     }
+
+    @PreAuthorize("hasRole('teacher')")
+    @PostMapping("/exam/edit")
+    public String editExam(@ModelAttribute("examAfter") @Valid Exam examAfter, @RequestParam long examId, Model model) {
+        examAfter = examService.edit(examId, examAfter);
+        return teacherController.getCourseById(examAfter.getCourse().getId(), model);
+    }
+
 }

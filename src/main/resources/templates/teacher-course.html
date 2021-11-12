@@ -45,7 +45,7 @@
 
     <h1 class="formh1" th:text="${course.getTitle()}">Course title</h1>
 
-    <hr class="hr">
+    <hr class="formhrsep">
     <br>
 
     <Div class="container course2 borderradius10px">
@@ -66,7 +66,7 @@
 
     <h1 class="formh1">Quiz List</h1>
 
-    <hr class="hr">
+    <hr class="formhrsep">
 
     <div class="container ticketA borderradius10px">
         <div class="container width25pc">
@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <div class="container ticketA borderradius10px" th:each="exam: ${exams}" th:href="${'/exam?id='+ exam.getId()}"
+    <div class="container ticketA borderradius10px" th:each="exam: ${exams}"
          th:id="${'exam'+ exam.getId()}">
         <div class="container width25pc">
             <span class="fromTo" th:text="${exam.getId()}">id</span>
@@ -96,8 +96,13 @@
             <span class="fromTo" th:text="${exam.getDuration()}">duration</span>
         </div>
         <div class="container width25pc">
+            <a class="marginright10px" th:href="${'/exam?id='+ exam.getId()}">
+                <button class="btn btn-submit" type="submit">Edit</button>
+            </a>
+
             <input class="btn btn-submit" name="trashcan" th:id="${exam.getId()}"
                    type="button" value="delete">
+
         </div>
 
     </div>

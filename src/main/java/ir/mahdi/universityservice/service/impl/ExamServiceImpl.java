@@ -66,4 +66,14 @@ public class ExamServiceImpl extends BaseServiceImpl<Exam, Long, ExamRepository>
         return repository.findExamByCourse(course);
     }
 
+    @Override
+    @Transactional
+    public Exam edit(long examId, Exam examAfter) {
+        Exam exam = repository.findById(examId).get();
+        exam.setDescription(examAfter.getDescription());
+        exam.setTitle(examAfter.getTitle());
+        exam.setDuration(examAfter.getDuration());
+        return repository.save(exam);
+    }
+
 }

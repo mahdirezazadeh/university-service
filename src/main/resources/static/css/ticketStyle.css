@@ -47,7 +47,7 @@
 .width25pc {
     width: 23%;
     height: 50px;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -103,6 +103,19 @@
     justify-content: space-around;
     align-items: center;
     font-size: 18pt;
+    font-weight: bold;
+}
+
+
+.description {
+    padding-top: 10px;
+    padding-left: 17px;
+    width: 30%;
+    height: 95px;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 13pt;
     font-weight: bold;
 }
 

@@ -10,4 +10,6 @@ public interface ExamService extends BaseService<Exam, Long> {
     boolean softDelete(long examId);
 
     public List<Exam> findExamsByCourse(Course course);
+
+    Exam edit(long examId, Exam examAfter);
 }

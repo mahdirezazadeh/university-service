@@ -2,11 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add Exam</title>
-    <!--    <link href="/static/css/style.css" rel="stylesheet">-->
-    <!--    <link href="/static/css/input.css" rel="stylesheet">-->
+    <title>Edit Exam</title>
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/input.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
     <link rel="stylesheet" th:href="@{/css/input.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ticketStyle.css}"/>
+    <!--    <link rel="stylesheet" href="/static/css/style.css"/>-->
+    <!--    <link rel="stylesheet" href="/static/css/input.css"/>-->
+    <!--    <link rel="stylesheet" href="/static/css/ticketStyle.css"/>-->
 </head>
 <body class="container">
 <dev class="container borderradius10px" id="heading">
@@ -28,27 +32,49 @@
 
 <dev class="container borderradius10px " id="mainDiv">
 
+    <h1 class="formh1" th:text="${exam.getTitle()}">Exam title</h1>
+
+    <hr class="formhrsep">
+    <br>
+
+    <Div class="container course2 borderradius10px">
+
+        <dev class="container courseDateTime">
+            <span th:text="${'Course: '+exam.getCourse().getTitle()}">Course: Python</span>
+            <span th:text="${'Duration: '+exam.getDuration()+' minutes'}">Duration: 20 minutes</span>
+        </dev>
+        <dev class="container description" sec:authorize="hasRole('teacher')">
+            <span th:text="${exam.getDescription()}">bluh bluh...</span>
+        </dev>
+    </Div>
+
     <div class="wrapper">
-        <form class="form" method="POST" th:action="@{/exam/create}" th:object="${exam}">
-            <h1 class="formh1">Create Exam</h1>
+        <form class="form" method="POST" th:action="@{/exam/edit}" th:object="${examAfter}">
+            <h1 class="formh1">Edit Exam</h1>
             <hr class="formhrsep"/>
-            <input name="courseId" th:value="${courseId}" type="hidden">
+
+            <input name="examId" th:value="${exam.getId()}" type="hidden">
+
             <div class="group">
-                <input class="input" id="title" required="required" th:field="*{title}" type="text"/><span
-                    class="highlight"></span><span class="bar"></span>
+                <input class="input" id="title" required="required" th:field="*{title}" th:value="${exam.getTitle()}"
+                       type="text"/>
+                <span class="highlight"></span>
+                <span class="bar"></span>
                 <label class="label">Title</label>
                 <p th:each="error : ${#fields.errors('title')}"
                    th:text="${error}">Validation error</p>
             </div>
             <div class="group">
-                <input class="input" id="startDate" required="required" th:field="*{description}" type="text"/><span
+                <input class="input" id="startDate" required="required" th:field="*{description}"
+                       th:value="${exam.getDescription()}" type="text"/><span
                     class="highlight"></span><span class="bar"></span>
                 <label class="label">Description</label>
                 <p th:each="error : ${#fields.errors('description')}"
-                   th:text="${error}">Description</p>
+                   th:text="${error}">Validation error</p>
             </div>
             <div class="group">
-                <input class="input" id="endDate" required="required" th:field="*{duration}" type="number"/><span
+                <input class="input" id="endDate" required="required" th:field="*{duration}"
+                       th:value="${exam.getDuration()}" type="number"/><span
                     class="highlight"></span><span class="bar"></span>
                 <label class="label">Duration</label>
             </div>
