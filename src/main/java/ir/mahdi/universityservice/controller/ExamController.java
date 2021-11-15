@@ -23,6 +23,14 @@ public class ExamController {
 
     private final CourseRestController courseRestController;
 
+    /**
+     * creates exam for course, authorized for teachers
+     *
+     * @param exam     the exam object wants to add to course
+     * @param courseId id of course for exam
+     * @param model    model for adding attributes
+     * @return returns to course page
+     */
     @PreAuthorize("hasRole('teacher')")
     @PostMapping("/exam/create")
     public String createExam(@ModelAttribute("exam") @Valid Exam exam, @RequestParam long courseId, Model model) {
@@ -31,7 +39,14 @@ public class ExamController {
         return teacherController.getCourseById(courseId, model);
     }
 
-    //    TAHA
+    /**
+     * for getting edit page of exam by id, authorized for teachers
+     *
+     * @param id        id of exam
+     * @param model     a model for adding attributes
+     * @param examAfter an exam obj for passing to page
+     * @return exam edit page
+     */
     @PreAuthorize("hasRole('teacher')")
     @GetMapping("/exam")
     public String createExam(@RequestParam long id, Model model, @ModelAttribute("examAfter") @Valid Exam examAfter) {
@@ -39,6 +54,14 @@ public class ExamController {
         return "exam-edit-page";
     }
 
+    /**
+     * for editing exam by exam id, authorized for teachers
+     *
+     * @param examAfter
+     * @param examId
+     * @param model
+     * @return
+     */
     @PreAuthorize("hasRole('teacher')")
     @PostMapping("/exam/edit")
     public String editExam(@ModelAttribute("examAfter") @Valid Exam examAfter, @RequestParam long examId, Model model) {

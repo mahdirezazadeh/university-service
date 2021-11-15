@@ -5,7 +5,6 @@ import ir.mahdi.universityservice.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,19 +19,27 @@ public class StudentController {
 
     private RoleController roleController;
 
-//    public List<Student> getStudentsByCourseId(long id) {
-////        studentService.findStudentsBy
-//    }
-
-
+    /**
+     * a method for getting signup students page
+     *
+     * @param student student object for passing to page
+     * @return sign up page
+     */
     @GetMapping("/signup-student")
     public String getSignup(@ModelAttribute("student") Student student) {
         return "signup-student";
     }
 
+    /**
+     * a method for sign up students by post method
+     *
+     * @param student student object that wants to sign up
+     * @param result  mistakes and errors occurred by client
+     * @return sign-up successfully page if sign up done otherwise returns to sign up pgae
+     */
     @PostMapping("/signup-student")
     public String save(@ModelAttribute("student") @Valid Student student,
-                       BindingResult result, Errors errors) {
+                       BindingResult result) {
         if (result.hasErrors())
             return "signup-student";
         if (studentService.findByUsername(student.getUsername()).isEmpty()) {

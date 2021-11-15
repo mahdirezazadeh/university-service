@@ -15,6 +15,11 @@ public class TeacherRestController {
 
     private final TeacherService teacherService;
 
+    /**
+     * gets available teachers list
+     *
+     * @return list of available teachers
+     */
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/teachers-list")
     public List<Teacher> getAvailableTeachers() {

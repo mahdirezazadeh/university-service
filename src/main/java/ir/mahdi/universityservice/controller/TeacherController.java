@@ -29,13 +29,26 @@ public class TeacherController {
 
     private final ExamRestController examRestController;
 
+    /**
+     * for getting teacher sign up page
+     *
+     * @param teacher for passing teacher to sign up form
+     * @return sign up page
+     */
     @GetMapping("/signup-teacher")
     public String getSignup(Teacher teacher) {
         return "signup-teacher";
     }
 
+    /**
+     * for sign up teacher and save him to database
+     *
+     * @param teacher the teacher object
+     * @param result  the result contains errors of client
+     * @return sign-up successfully page if sign up done otherwise returns to sign up pgae
+     */
     @PostMapping("/signup-teacher")
-    public String save(@Valid Teacher teacher, BindingResult result, Model model) {
+    public String save(@Valid Teacher teacher, BindingResult result) {
         if (result.hasErrors())
             return "signup-teacher";
         if (teacherService.findByUsername(teacher.getUsername()).isEmpty()) {
@@ -46,6 +59,12 @@ public class TeacherController {
         return "signup-teacher";
     }
 
+    /**
+     * gets list of courses for teacher
+     *
+     * @param model a model for adding attributes
+     * @return teacher courses list page
+     */
     @PreAuthorize("hasRole('teacher')")
     @GetMapping("/teacher/course/list")
     public String getCoursesByTeacher(Model model) {
@@ -56,6 +75,13 @@ public class TeacherController {
         return "teacher-courses";
     }
 
+    /**
+     * get course page by id
+     *
+     * @param id    id ov course
+     * @param model a model for adding attributes
+     * @return return course page
+     */
     @PreAuthorize("hasRole('teacher')")
     @GetMapping("/teacher/course")
     public String getCourseById(@RequestParam long id, Model model) {

@@ -15,6 +15,12 @@ public class AdminController {
     private final UserController userController;
 
 
+    /**
+     * a method for getting all users by admin to confirm registration of users
+     *
+     * @param model a model for adding attributes
+     * @return returns list of users page
+     */
     @GetMapping("/admin/confirm-users")
     public String getAllUsersToConfirm(Model model) {
         model.addAttribute("users", userController.getAllUsers());

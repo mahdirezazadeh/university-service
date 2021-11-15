@@ -30,6 +30,12 @@ public class CourseController {
     private final CourseMapperToCourseDTO mapperToCourseDTO;
     private final TeacherService teacherService;
 
+    /**
+     * a method for getting course creation page
+     *
+     * @param course a course dto passing to page
+     * @return course creation page
+     */
     //    TODO add create-corese operation to db and use it instead of admin role
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/course/create")
@@ -37,6 +43,14 @@ public class CourseController {
         return "create-course";
     }
 
+    /**
+     * a method for creating course
+     *
+     * @param courseDTO gets courseDTO as DTO of course that has data of just created course
+     * @param result    getting result for detecting errors if exist
+     * @param model     a model for adding attributes
+     * @return returns to course list page
+     */
     @PreAuthorize("hasRole('admin')")
     @PostMapping("/course/create")
     public String addCourse(@ModelAttribute("course") @Valid CourseDTO courseDTO,
@@ -52,6 +66,12 @@ public class CourseController {
         return courseList(model);
     }
 
+    /**
+     * a method for getting courses list, authorized by admin
+     *
+     * @param model a model for adding attributes
+     * @return page for listing courses
+     */
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/course/list")
     public String courseList(Model model) {
@@ -59,6 +79,13 @@ public class CourseController {
         return "course-list";
     }
 
+    /**
+     * a method for getting course by id authorized by just admin
+     *
+     * @param id    id of course
+     * @param model a model for adding attributes
+     * @return page of course for admins
+     */
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/course")
     public String getCourseById(@RequestParam long id, Model model) {
@@ -73,6 +100,13 @@ public class CourseController {
         return "error-page";
     }
 
+    /**
+     * a method to edit teacher of course authorized by admin
+     *
+     * @param courseId an id of course
+     * @param model    a model for adding attributes
+     * @return return page for editing course teacher
+     */
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/course/edit-teacher")
     public String editTeacher(@RequestParam long courseId, Model model) {
@@ -92,6 +126,15 @@ public class CourseController {
         return "error-page";
     }
 
+
+    /**
+     * Add exam to course by course id
+     *
+     * @param courseId a long value that points to course id
+     * @param model    a model for adding courseId as attribute
+     * @param exam     and exam for passing to page
+     * @return return exam adding page that contains a form to get exam info
+     */
     @PreAuthorize("hasRole('teacher')")
     @GetMapping("/course/add-exam")
     public String addExam(@RequestParam long courseId, Model model, Exam exam) {

@@ -21,6 +21,13 @@ public class CourseRestController {
     private final CourseService courseService;
     private final TeacherService teacherService;
 
+    /**
+     * a method for setting teacher to course by teacher id and course id
+     *
+     * @param teacherId an id of teacher
+     * @param courseId  an id of course
+     * @return accepted http status if teacher changes otherwise returns Bad request http status
+     */
     @PreAuthorize("hasRole('admin')")
     @PostMapping("/course/set-teacher")
     public HttpStatus setTeacher(long teacherId, long courseId) {
@@ -35,12 +42,24 @@ public class CourseRestController {
         return HttpStatus.BAD_REQUEST;
     }
 
+    /**
+     * for getting list of courses by teacher, authorized for teachers
+     *
+     * @param teacher the teacher object
+     * @return list of courses for the teacher
+     */
     @PreAuthorize("hasRole('teacher')")
     @GetMapping("/teacher/courseByTeacher")
     public List<Course> getCoursesByTeacher(Teacher teacher) {
         return courseService.findCoursesByTeacher(teacher);
     }
 
+    /**
+     * for getting course by id, authorized for teachers
+     *
+     * @param id id of course
+     * @return return Optional Course object
+     */
     @PreAuthorize("hasRole('teacher')")
     @GetMapping("/teacher/courseById")
     public Optional<Course> getCourseById(long id) {
