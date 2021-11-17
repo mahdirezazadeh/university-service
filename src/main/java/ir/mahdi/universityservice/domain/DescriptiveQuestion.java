@@ -11,5 +11,5 @@ import javax.persistence.Entity;
 @Setter
 @Getter
 @NoArgsConstructor
-public class DescriptiveQuestions extends Question<String, String> {
+public class DescriptiveQuestion extends Question<String, String> {
 }

@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MultipleChoiceQuestions extends Question<String, String> {
+public class MultipleChoiceQuestion extends Question<String, String> {
 
     @ElementCollection
     private Set<String> choices = new HashSet<>();
