@@ -18,12 +18,16 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Question<QUESTION, ANSWER> extends BaseEntity<Long> {
     private static final String TITLE = "title";
+    private static final String QUESTION_TYPE = "question_type";
 
     @Column(name = TITLE, length = 100, nullable = false)
     private String title;
 
     @ManyToOne
     private Course course;
+
+    @Column(name = QUESTION_TYPE)
+    private String questionType;
 
     private QUESTION question;
 

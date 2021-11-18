@@ -26,7 +26,7 @@ public class ExamQuestion extends BaseEntity<Long> {
     private Exam exam;
 
     @ManyToOne
-    private Question question;
+    private Question<?, ?> question;
 
     private int score;
 }
