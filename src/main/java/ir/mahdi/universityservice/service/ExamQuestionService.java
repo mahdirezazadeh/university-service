@@ -10,4 +10,6 @@ public interface ExamQuestionService extends BaseService<ExamQuestion, Long> {
     List<ExamQuestion> findAllByExamId(Long examId);
 
     List<Question> findExamQuestionsByExamId(long examId);
+
+    ExamQuestion createQuestionByExamIdQuestionIdScore(long examId, long questionId, int score);
 }

@@ -1,6 +1,7 @@
 package ir.mahdi.universityservice.controller;
 
 import ir.mahdi.universityservice.domain.Exam;
+import ir.mahdi.universityservice.domain.base.Question;
 import ir.mahdi.universityservice.service.ExamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class ExamController {
     private final TeacherController teacherController;
 
     private final CourseRestController courseRestController;
+    private final QuestionRestController questionRestController;
 
     /**
      * creates exam for course, authorized for teachers
@@ -67,6 +70,17 @@ public class ExamController {
     public String editExam(@ModelAttribute("examAfter") @Valid Exam examAfter, @RequestParam long examId, Model model) {
         examAfter = examService.edit(examId, examAfter);
         return teacherController.getCourseById(examAfter.getCourse().getId(), model);
+    }
+
+    @PreAuthorize("hasRole('teacher')")
+    @GetMapping("/exam/question-bank")
+    public String getQuestionBankByExamId(@RequestParam long examId, Model model) {
+        List<Question<?, ?>> bank = questionRestController.getQuestionBankByExamId(examService.findById(examId).get().getCourse());
+
+        model.addAttribute("examId", examId);
+        model.addAttribute("bank", bank);
+
+        return "question-bank";
     }
 
 //    @PreAuthorize("hasRole('teacher')")

@@ -82,4 +82,18 @@ public class QuestionController {
         return getQuestionsByExamId(examId, model);
     }
 
+    @GetMapping("/exam/question-bank/add-exam")
+    public String getAddQuestionFromBankForm(@RequestParam long examId, @RequestParam long questionId, Model model) {
+        model.addAttribute("examId", examId);
+        model.addAttribute("questionId", questionId);
+
+        return "add-question-from-bank";
+    }
+
+    @PostMapping("/exam/question-bank/add-exam")
+    public String addQuestionFromBank(@RequestParam long examId, @RequestParam long questionId, @RequestParam int score, Model model) {
+        examQuestionService.createQuestionByExamIdQuestionIdScore(examId, questionId, score);
+        return getQuestionsByExamId(examId, model);
+    }
+
 }

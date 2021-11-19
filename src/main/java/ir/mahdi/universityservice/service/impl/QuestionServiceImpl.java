@@ -1,6 +1,7 @@
 package ir.mahdi.universityservice.service.impl;
 
 import ir.mahdi.universityservice.base.service.impl.BaseServiceImpl;
+import ir.mahdi.universityservice.domain.Course;
 import ir.mahdi.universityservice.domain.base.Question;
 import ir.mahdi.universityservice.repository.QuestionRepository;
 import ir.mahdi.universityservice.service.QuestionService;
@@ -16,6 +17,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class QuestionServiceImpl extends BaseServiceImpl<Question<?, ?>, Long, QuestionRepository> implements QuestionService {
+
 
     @Autowired
     public QuestionServiceImpl(QuestionRepository repository) {
@@ -39,5 +41,10 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question<?, ?>, Long, Q
     @Transactional
     public void deleteById(Long id) {
         super.deleteById(id);
+    }
+
+    @Override
+    public List<Question<?, ?>> findQuestionsByExam(Course course) {
+        return repository.findAllByCourse(course);
     }
 }

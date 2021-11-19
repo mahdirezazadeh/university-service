@@ -1,6 +1,9 @@
 package ir.mahdi.universityservice.controller;
 
+import ir.mahdi.universityservice.domain.Course;
+import ir.mahdi.universityservice.domain.base.Question;
 import ir.mahdi.universityservice.service.ExamQuestionService;
+import ir.mahdi.universityservice.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,11 +11,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class QuestionRestController {
 
     private final ExamQuestionService examQuestionService;
+
+    private final QuestionService questionService;
 
 
     @PreAuthorize("hasRole('teacher')")
@@ -22,6 +29,12 @@ public class QuestionRestController {
         examQuestionService.deleteById(examQuestionId);
 
         return HttpStatus.ACCEPTED;
+    }
+
+
+    @PreAuthorize("hasRole('teacher')")
+    public List<Question<?, ?>> getQuestionBankByExamId(Course course) {
+        return questionService.findQuestionsByExam(course);
     }
 
 
