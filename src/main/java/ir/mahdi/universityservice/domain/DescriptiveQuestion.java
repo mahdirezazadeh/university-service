@@ -18,7 +18,7 @@ public class DescriptiveQuestion extends Question<String, String> {
     }
 
     @Builder
-    public DescriptiveQuestion(String title, Course course, String question, String answer) {
-        super(title, course, "Descriptive", question, answer);
+    public DescriptiveQuestion(String title, Course course, String s, String s2) {
+        super(title, course, "Descriptive", s, s2);
     }
 }

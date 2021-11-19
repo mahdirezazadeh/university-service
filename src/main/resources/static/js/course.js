@@ -98,6 +98,30 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('input[name="delete_question"]').click(function () {
+        let questionId = $(this).attr("id");
+        // let examId = $('input[name="examId"]').val();
+        // console.log(examId)
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            type: 'POST',
+            url: `http://localhost:8080/question/delete`,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            data: {
+                // examId: examId,
+                // questionId: questionId
+                questionId: questionId
+            },
+            success: function () {
+                $(`#question${questionId}`).remove();
+                console.log("exam deleted!");
+            }
+        });
+    });
 })
 
 

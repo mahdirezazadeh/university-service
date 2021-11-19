@@ -31,6 +31,13 @@ public class QuestionRestController {
         return HttpStatus.ACCEPTED;
     }
 
+    @PreAuthorize("hasRole('teacher')")
+    @PostMapping("/question/delete")
+    public HttpStatus delete(@RequestParam long questionId) {
+        questionService.deleteById(questionId);
+        return HttpStatus.ACCEPTED;
+    }
+
 
     @PreAuthorize("hasRole('teacher')")
     public List<Question<?, ?>> getQuestionBankByExamId(Course course) {
