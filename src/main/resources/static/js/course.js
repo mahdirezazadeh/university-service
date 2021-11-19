@@ -73,6 +73,31 @@ $(document).ready(function () {
     });
 
 
+//    remove_question
+    $('input[name="remove_question"]').click(function () {
+        let examQuestionId = $(this).attr("id");
+        // let examId = $('input[name="examId"]').val();
+        console.log(examQuestionId)
+        // console.log(examId)
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            type: 'POST',
+            url: `http://localhost:8080/question/remove-from-exam`,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            data: {
+                // examId: examId,
+                // questionId: questionId
+                examQuestionId: examQuestionId
+            },
+            success: function () {
+                $(`#question${examQuestionId}`).remove();
+                console.log("exam deleted!");
+            }
+        });
+    });
 })
 
 

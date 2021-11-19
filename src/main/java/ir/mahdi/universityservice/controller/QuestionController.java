@@ -3,7 +3,6 @@ package ir.mahdi.universityservice.controller;
 import ir.mahdi.universityservice.domain.DescriptiveQuestion;
 import ir.mahdi.universityservice.domain.ExamQuestion;
 import ir.mahdi.universityservice.domain.MultipleChoiceQuestion;
-import ir.mahdi.universityservice.domain.base.Question;
 import ir.mahdi.universityservice.mapper.ExamMapper;
 import ir.mahdi.universityservice.service.DescriptiveQuestionService;
 import ir.mahdi.universityservice.service.ExamQuestionService;
@@ -38,7 +37,8 @@ public class QuestionController {
     @GetMapping("/exam/questions")
     public String getQuestionsByExamId(Long examId, Model model) {
         ExamDTO examById = examRestController.getExamById(examId);
-        List<Question> questions = examQuestionService.findExamQuestionsByExamId(examId);
+//        List<Question> questions = examQuestionService.findExamQuestionsByExamId(examId);
+        List<ExamQuestion> questions = examQuestionService.findAllByExamId(examId);
         model.addAttribute("questions", questions);
         model.addAttribute("exam", examById);
         return "exam-questions";

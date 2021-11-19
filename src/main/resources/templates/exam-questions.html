@@ -67,6 +67,8 @@
 
 <dev class="container borderradius10px" id="mainDiv" th:if="${questions.size()>0}">
 
+    <input name="examId" th:value="${exam.getId()}" type="hidden"/>
+
     <h1 class="formh1">Question List</h1>
 
     <hr class="formhrsep">
@@ -96,10 +98,10 @@
             <span class="fromTo" th:text="${question.getId()}">id</span>
         </div>
         <div class="container width25pc">
-            <span class="fromTo" th:text="${question.getTitle()}">title</span>
+            <span class="fromTo" th:text="${question.getQuestion().getTitle()}">title</span>
         </div>
         <div class="container width25pc">
-            <span class="fromTo" th:text="${question.getQuestionType()}">question Type</span>
+            <span class="fromTo" th:text="${question.getQuestion().getQuestionType()}">question Type</span>
         </div>
         <!--        <div class="container width25pc">-->
         <!--            <span class="fromTo" th:text="${question.getQuestion()}">question</span>-->
@@ -110,7 +112,7 @@
             <!--                <button class="btn btn-submit" type="submit">Edit</button>-->
             <!--            </a>-->
 
-            <input class="btn btn-submit" name="trashcan" th:id="${question.getId()}"
+            <input class="btn btn-submit" name="remove_question" th:id="${question.getId()}"
                    type="button" value="remove">
 
         </div>
