@@ -2,10 +2,13 @@ package ir.mahdi.universityservice.controller;
 
 import ir.mahdi.universityservice.domain.Course;
 import ir.mahdi.universityservice.domain.Exam;
+import ir.mahdi.universityservice.mapper.ExamMapper;
 import ir.mahdi.universityservice.service.ExamService;
+import ir.mahdi.universityservice.service.dto.ExamDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +20,8 @@ import java.util.List;
 public class ExamRestController {
 
     private final ExamService examService;
+
+    private final ExamMapper examMapper;
 
     /**
      * for getting exams of course
@@ -42,6 +47,18 @@ public class ExamRestController {
         if (examService.softDelete(examId))
             return HttpStatus.ACCEPTED;
         return HttpStatus.BAD_REQUEST;
+    }
+
+    @PreAuthorize("hasRole('teacher')")
+    @GetMapping("/examById")
+    public HttpStatus getExamById(long id, Model model) {
+        try {
+            ExamDTO examDTO = examMapper.convertEntityToDTO(examService.findById(id).get());
+            model.addAttribute("exam", examDTO);
+            return HttpStatus.FOUND;
+        } catch (Exception e) {
+            return HttpStatus.NOT_FOUND;
+        }
     }
 
 }

@@ -69,4 +69,18 @@ public class ExamController {
         return teacherController.getCourseById(examAfter.getCourse().getId(), model);
     }
 
+//    @PreAuthorize("hasRole('teacher')")
+//    @GetMapping("/exam/add-question")
+//    public String addQuestionToExamById(@RequestParam long examId) {
+//        return "create-question";
+//    }
+//
+//    //    Its Not Acceptable
+//    @PreAuthorize("hasRole('teacher')")
+//    @PostMapping("/exam/add-question")
+//    public String createQuestionForExam(@ModelAttribute("question") Question question, @RequestParam long examId, @RequestParam int score, Model model) {
+//        ExamQuestion examQuestion = examService.addQuestionByExamId(examId, question, score);
+//        return teacherController.getCourseById(examQuestion.getExam().getCourse().getId(), model);
+//    }
+
 }

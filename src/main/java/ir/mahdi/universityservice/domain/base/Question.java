@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Question<QUESTION, ANSWER> extends BaseEntity<Long> {
     private static final String TITLE = "title";
     private static final String QUESTION_TYPE = "question_type";

@@ -3,8 +3,12 @@ package ir.mahdi.universityservice.service.impl;
 import ir.mahdi.universityservice.base.service.impl.BaseServiceImpl;
 import ir.mahdi.universityservice.domain.Course;
 import ir.mahdi.universityservice.domain.Exam;
+import ir.mahdi.universityservice.domain.ExamQuestion;
+import ir.mahdi.universityservice.domain.base.Question;
 import ir.mahdi.universityservice.repository.ExamRepository;
+import ir.mahdi.universityservice.service.ExamQuestionService;
 import ir.mahdi.universityservice.service.ExamService;
+import ir.mahdi.universityservice.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +21,12 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 public class ExamServiceImpl extends BaseServiceImpl<Exam, Long, ExamRepository> implements ExamService {
+
+    @Autowired
+    private QuestionService questionService;
+
+    @Autowired
+    private ExamQuestionService examQuestionService;
 
     @Autowired
     public ExamServiceImpl(ExamRepository repository) {
@@ -74,6 +84,15 @@ public class ExamServiceImpl extends BaseServiceImpl<Exam, Long, ExamRepository>
         exam.setTitle(examAfter.getTitle());
         exam.setDuration(examAfter.getDuration());
         return repository.save(exam);
+    }
+
+    @Override
+    @Transactional
+    public ExamQuestion addQuestionByExamId(long examId, Question question, int score) {
+        Question<?, ?> question1 = questionService.save(question);
+        ExamQuestion examQuestion = new ExamQuestion(findById(examId).get(), question1, score);
+        ExamQuestion examQuestion1 = examQuestionService.save(examQuestion);
+        return examQuestion1;
     }
 
 }
