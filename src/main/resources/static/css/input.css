@@ -145,8 +145,13 @@
     margin-left: 5px;
 }
 
-.selectlabeldiv>label{
+.selectlabeldiv > label {
 
     font-size: 14px;
     color: #7115ad;
+}
+
+.error {
+    color: red;
+    text-align: center;
 }

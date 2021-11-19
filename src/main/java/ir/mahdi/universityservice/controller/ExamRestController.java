@@ -8,7 +8,6 @@ import ir.mahdi.universityservice.service.dto.ExamDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,13 +50,21 @@ public class ExamRestController {
 
     @PreAuthorize("hasRole('teacher')")
     @GetMapping("/examById")
-    public HttpStatus getExamById(long id, Model model) {
+    public ExamDTO getExamById(long id) {
         try {
             ExamDTO examDTO = examMapper.convertEntityToDTO(examService.findById(id).get());
-            model.addAttribute("exam", examDTO);
-            return HttpStatus.FOUND;
+            return examDTO;
         } catch (Exception e) {
-            return HttpStatus.NOT_FOUND;
+            return null;
+        }
+    }
+
+    public Course getCourseByExamId(long id) {
+        try {
+            Exam exam = examService.findById(id).get();
+            return exam.getCourse();
+        } catch (Exception e) {
+            return null;
         }
     }
 

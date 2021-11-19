@@ -1,16 +1,23 @@
 package ir.mahdi.universityservice.controller;
 
 import ir.mahdi.universityservice.domain.DescriptiveQuestion;
+import ir.mahdi.universityservice.domain.ExamQuestion;
 import ir.mahdi.universityservice.domain.MultipleChoiceQuestion;
 import ir.mahdi.universityservice.domain.base.Question;
+import ir.mahdi.universityservice.mapper.ExamMapper;
+import ir.mahdi.universityservice.service.DescriptiveQuestionService;
 import ir.mahdi.universityservice.service.ExamQuestionService;
 import ir.mahdi.universityservice.service.QuestionService;
+import ir.mahdi.universityservice.service.dto.ExamDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -24,11 +31,16 @@ public class QuestionController {
 
     private final ExamRestController examRestController;
 
+    private final DescriptiveQuestionService descriptiveQuestionService;
+
+    private final ExamMapper examMapper;
+
     @GetMapping("/exam/questions")
     public String getQuestionsByExamId(Long examId, Model model) {
-        examRestController.getExamById(examId, model);
+        ExamDTO examById = examRestController.getExamById(examId);
         List<Question> questions = examQuestionService.findExamQuestionsByExamId(examId);
         model.addAttribute("questions", questions);
+        model.addAttribute("exam", examById);
         return "exam-questions";
     }
 
@@ -45,8 +57,29 @@ public class QuestionController {
 
 
     @GetMapping("/exam/create-question/descriptive")
-    public String getDescriptiveQuestionCreateFrom(@RequestParam long examId, DescriptiveQuestion question) {
+    public String getDescriptiveQuestionCreateFrom(@RequestParam long examId, DescriptiveQuestion question, Model model) {
+        model.addAttribute("examId", examId);
+        model.addAttribute("question", question);
         return "question-create-descriptive";
+    }
+
+    @PostMapping("/exam/create-question/descriptive")
+    public String saveDescriptiveQuestion(@RequestParam long examId, @Valid DescriptiveQuestion question, @RequestParam int score, Model model, BindingResult result) {
+
+        if (result.hasErrors())
+            return "question-create-descriptive";
+        question.setCourse(examRestController.getCourseByExamId(examId));
+
+        DescriptiveQuestion descriptiveQuestion = descriptiveQuestionService.save(question);
+//        descriptiveQuestion.setCourse();
+        ExamQuestion examQuestion = new ExamQuestion(
+                examMapper.convertDTOToEntity(examRestController.getExamById(examId)),
+                descriptiveQuestion,
+                score
+        );
+        examQuestionService.save(examQuestion);
+
+        return getQuestionsByExamId(examId, model);
     }
 
 }

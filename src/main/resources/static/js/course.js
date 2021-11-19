@@ -45,6 +45,34 @@ $(document).ready(function () {
     });
 
 
+    $('input[name="score"]').keyup(function () {
+        console.log("score changes");
+        if ($('input[name="score"]').val() < 0) {
+            // console.log("score is lesser than 0")
+            // $('input[name="score"]').val('');
+            $('p[id="scoreError"]').html('Score can not be zero or negative!');
+            $(':input[type="submit"]').prop('disabled', true);
+        } else {
+            $('p[id="scoreError"]').html('');
+            $(':input[type="submit"]').prop('disabled', false);
+        }
+    });
+
+
+    $('input[name="score"]').change(function () {
+        console.log("score changes");
+        if ($('input[name="score"]').val() <= 0) {
+            // console.log("score is equal 0")
+            // $('input[name="score"]').val('');
+            $('p[id="scoreError"]').html('Score can not be zero or negative!');
+            $(':input[type="submit"]').prop('disabled', true);
+        } else {
+            $('p[id="scoreError"]').html('');
+            $(':input[type="submit"]').prop('disabled', false);
+        }
+    });
+
+
 })
 
 
