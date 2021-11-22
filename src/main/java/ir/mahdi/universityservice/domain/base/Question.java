@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Question<QUESTION, ANSWER> extends BaseEntity<Long> {
+public class Question<QUESTION, ANSWER> extends BaseEntity<Long> {
     private static final String TITLE = "title";
     private static final String QUESTION_TYPE = "question_type";
 
