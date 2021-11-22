@@ -1,8 +1,11 @@
 package ir.mahdi.universityservice.controller;
 
+import ir.mahdi.universityservice.base.BaseEntity;
 import ir.mahdi.universityservice.domain.Course;
+import ir.mahdi.universityservice.domain.Student;
 import ir.mahdi.universityservice.domain.Teacher;
 import ir.mahdi.universityservice.service.CourseService;
+import ir.mahdi.universityservice.service.StudentService;
 import ir.mahdi.universityservice.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,7 @@ public class CourseRestController {
 
     private final CourseService courseService;
     private final TeacherService teacherService;
+    private final StudentService studentService;
 
     /**
      * a method for setting teacher to course by teacher id and course id
@@ -64,6 +68,23 @@ public class CourseRestController {
     @GetMapping("/teacher/courseById")
     public Optional<Course> getCourseById(long id) {
         return courseService.findById(id);
+    }
+
+    @PreAuthorize("hasRole('admin')")
+    @PostMapping("/course/add-or-remove-student")
+    public HttpStatus addOrRemoveStudent(long studentId, long courseId) {
+        Course course = courseService.findById(courseId).get();
+        Student student = studentService.findById(studentId).get();
+
+        long count = course.getStudents().stream().map(BaseEntity::getId).filter(id -> id == studentId).count();
+        if (count == 0) {
+            course.getStudents().add(student);
+        } else {
+            course.getStudents().remove(student);
+        }
+        courseService.save(course);
+        return HttpStatus.ACCEPTED;
+
     }
 }
 

@@ -45,6 +45,7 @@ $(document).ready(function () {
     });
 
 
+    //function for validate score
     $('input[name="score"]').keyup(function () {
         console.log("score changes");
         if ($('input[name="score"]').val() < 0) {
@@ -59,6 +60,7 @@ $(document).ready(function () {
     });
 
 
+    //function for validate score
     $('input[name="score"]').change(function () {
         console.log("score changes");
         if ($('input[name="score"]').val() <= 0) {
@@ -99,6 +101,7 @@ $(document).ready(function () {
         });
     });
 
+    //delete question
     $('input[name="delete_question"]').click(function () {
         let questionId = $(this).attr("id");
         // let examId = $('input[name="examId"]').val();
@@ -117,6 +120,30 @@ $(document).ready(function () {
             success: function () {
                 $(`#question${questionId}`).remove();
                 console.log("exam deleted!");
+            }
+        });
+    });
+
+    //js post function for adding or removing student
+    $('input[name="studentId"]').click(function () {
+        let studentId = $(this).val();
+        console.log(studentId);
+        let courseId = $('input[name="courseIdd"]').val();
+        console.log(courseId);
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            type: 'POST',
+            url: `http://localhost:8080/course/add-or-remove-student`,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            data: {
+                studentId: studentId,
+                courseId: courseId
+            },
+            success: function () {
+                console.log("succeed!");
             }
         });
     });

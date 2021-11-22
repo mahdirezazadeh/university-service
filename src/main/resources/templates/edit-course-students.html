@@ -48,13 +48,8 @@
 
     <input id="courseIdd" name="courseIdd" th:value="${courseId}" type="hidden"/>
 
-    <h1 class="formh1">Courses List</h1>
+    <h1 class="formh1">Students List</h1>
     <hr class="hr">
-
-    <h2 class="formh1">In Course Students</h2>
-    <hr class="hr">
-
-    <!--    TODO implement later-->
 
     <div class="container teacher borderradius10px">
         <div class="container width25pc">
@@ -67,67 +62,44 @@
             <span class="fromTo">full name</span>
         </div>
         <div class="container width25pc">
-            <span class="fromTo">Course Teacher</span>
+            <span class="fromTo">Is in course</span>
         </div>
     </div>
 
-    <div class="container teacher borderradius10px" th:each="teacher: ${teachers}">
+    <div class="container teacher borderradius10px" th:each="student: ${studentsInCourse}">
         <div class="container width25pc">
-            <span class="fromTo" th:text="${teacher.getId()}">id</span>
+            <span class="fromTo" th:text="${student.getId()}">id</span>
         </div>
         <div class="container width25pc">
-            <span class="fromTo" th:text="${teacher.getUsername()}">username</span>
+            <span class="fromTo" th:text="${student.getUsername()}">username</span>
         </div>
         <div class="container width25pc">
-            <span class="fromTo" th:text="${teacher.getFullName()}">full name</span>
+            <span class="fromTo" th:text="${student.getFullName()}">full name</span>
         </div>
         <div class="container width25pc">
             <label class="switch">
-                <input checked name="teacherId" th:if="${teacher.getId() == currentTeacherId}"
-                       th:value="${teacher.getId()}" type="radio">
-                <input name="teacherId" th:if="${teacher.getId() != currentTeacherId}" th:value="${teacher.getId()}"
-                       type="radio">
-                <span class="slider round" th:value="${teacher.getId()}"></span>
+                <input checked name="studentId"
+                       th:value="${student.getId()}" type="checkbox">
+                <span class="slider round" th:value="${student.getId()}"></span>
             </label>
         </div>
     </div>
 
-
-    <h2 class="formh1">Not In Course Students</h2>
-    <hr class="hr">
-
-    <div class="container teacher borderradius10px">
+    <div class="container teacher borderradius10px" th:each="student: ${studentsOutCourse}">
         <div class="container width25pc">
-            <span class="fromTo">id</span>
+            <span class="fromTo" th:text="${student.getId()}">id</span>
         </div>
         <div class="container width25pc">
-            <span class="fromTo">username</span>
+            <span class="fromTo" th:text="${student.getUsername()}">username</span>
         </div>
         <div class="container width25pc">
-            <span class="fromTo">full name</span>
-        </div>
-        <div class="container width25pc">
-            <span class="fromTo">Course Teacher</span>
-        </div>
-    </div>
-
-    <div class="container teacher borderradius10px" th:each="teacher: ${teachers}">
-        <div class="container width25pc">
-            <span class="fromTo" th:text="${teacher.getId()}">id</span>
-        </div>
-        <div class="container width25pc">
-            <span class="fromTo" th:text="${teacher.getUsername()}">username</span>
-        </div>
-        <div class="container width25pc">
-            <span class="fromTo" th:text="${teacher.getFullName()}">full name</span>
+            <span class="fromTo" th:text="${student.getFullName()}">full name</span>
         </div>
         <div class="container width25pc">
             <label class="switch">
-                <input checked name="teacherId" th:if="${teacher.getId() == currentTeacherId}"
-                       th:value="${teacher.getId()}" type="radio">
-                <input name="teacherId" th:if="${teacher.getId() != currentTeacherId}" th:value="${teacher.getId()}"
-                       type="radio">
-                <span class="slider round" th:value="${teacher.getId()}"></span>
+                <input name="studentId" th:value="${student.getId()}"
+                       type="checkbox">
+                <span class="slider round" th:value="${student.getId()}"></span>
             </label>
         </div>
     </div>

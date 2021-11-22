@@ -2,9 +2,11 @@ package ir.mahdi.universityservice.controller;
 
 import ir.mahdi.universityservice.domain.Course;
 import ir.mahdi.universityservice.domain.Exam;
+import ir.mahdi.universityservice.domain.Student;
 import ir.mahdi.universityservice.domain.Teacher;
 import ir.mahdi.universityservice.mapper.CourseMapperToCourseDTO;
 import ir.mahdi.universityservice.service.CourseService;
+import ir.mahdi.universityservice.service.StudentService;
 import ir.mahdi.universityservice.service.TeacherService;
 import ir.mahdi.universityservice.service.dto.CourseDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Controller
@@ -27,6 +30,7 @@ public class CourseController {
     private final CourseService courseService;
     private final CourseMapperToCourseDTO mapperToCourseDTO;
     private final TeacherService teacherService;
+    private final StudentService studentService;
 
     /**
      * a method for getting course creation page
@@ -125,6 +129,28 @@ public class CourseController {
         return "error-page";
     }
 
+    /**
+     * a method to edit students of course authorized by admin
+     *
+     * @param courseId an id of course
+     * @param model    a model for adding attributes
+     * @return return page for editing course teacher
+     */
+    @PreAuthorize("hasRole('admin')")
+    @GetMapping("/edit-students")
+    public String editStudents(@RequestParam long courseId, Model model) {
+        Optional<Course> course = courseService.findById(courseId);
+        if (course.isPresent()) {
+            model.addAttribute("courseId", course.get().getId());
+            Set<Student> studentsInCourse = course.get().getStudents();
+            model.addAttribute("studentsInCourse", studentsInCourse);
+            List<Student> studentsOutCourse = studentService.findOtherStudents(studentsInCourse);
+            model.addAttribute("studentsOutCourse", studentsOutCourse);
+            return "edit-course-students";
+        }
+        model.addAttribute("message", "Course does not exist!");
+        return "error-page";
+    }
 
     /**
      * Add exam to course by course id
