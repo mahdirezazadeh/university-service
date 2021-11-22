@@ -41,9 +41,20 @@ public class QuestionController {
         ExamDTO examById = examRestController.getExamById(examId);
 //        List<Question> questions = examQuestionService.findExamQuestionsByExamId(examId);
         List<ExamQuestion> questions = examQuestionService.findAllByExamId(examId);
+        int examScore = sumOfScores(questions);
         model.addAttribute("questions", questions);
         model.addAttribute("exam", examById);
+        model.addAttribute("examScore", examScore);
         return "exam-questions";
+    }
+
+    private int sumOfScores(List<ExamQuestion> questions) {
+        int score = 0;
+        for (ExamQuestion question : questions
+        ) {
+            score += question.getScore();
+        }
+        return score;
     }
 
     @PreAuthorize("hasRole('teacher')")

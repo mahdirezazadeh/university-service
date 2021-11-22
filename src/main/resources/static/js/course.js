@@ -76,9 +76,10 @@ $(document).ready(function () {
 //    remove_question
     $('input[name="remove_question"]').click(function () {
         let examQuestionId = $(this).attr("id");
-        // let examId = $('input[name="examId"]').val();
-        console.log(examQuestionId)
-        // console.log(examId)
+        let examNewScore = $('#examScore').html().substring(12) - $(`#score${examQuestionId}`).html();
+        console.log($('#examScore').html().substring(12));
+        console.log($(`#score${examQuestionId}`).html());
+        console.log(examNewScore);
         let token = $("meta[name='_csrf']").attr("content");
         let header = $("meta[name='_csrf_header']").attr("content");
         $.ajax({
@@ -88,12 +89,11 @@ $(document).ready(function () {
                 xhr.setRequestHeader(header, token);
             },
             data: {
-                // examId: examId,
-                // questionId: questionId
                 examQuestionId: examQuestionId
             },
             success: function () {
                 $(`#question${examQuestionId}`).remove();
+                $('#examScore').html(`Exam Score: ${examNewScore}`)
                 console.log("exam deleted!");
             }
         });
@@ -112,8 +112,6 @@ $(document).ready(function () {
                 xhr.setRequestHeader(header, token);
             },
             data: {
-                // examId: examId,
-                // questionId: questionId
                 questionId: questionId
             },
             success: function () {
