@@ -59,6 +59,7 @@ public class ExamRestController {
         }
     }
 
+    @PreAuthorize("hasRole('teacher')")
     public Course getCourseByExamId(long id) {
         try {
             Exam exam = examService.findById(id).get();

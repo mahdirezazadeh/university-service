@@ -9,6 +9,7 @@ import ir.mahdi.universityservice.service.ExamQuestionService;
 import ir.mahdi.universityservice.service.QuestionService;
 import ir.mahdi.universityservice.service.dto.ExamDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,7 @@ public class QuestionController {
 
     private final ExamMapper examMapper;
 
+    @PreAuthorize("hasRole('teacher')")
     @GetMapping("/exam/questions")
     public String getQuestionsByExamId(Long examId, Model model) {
         ExamDTO examById = examRestController.getExamById(examId);
@@ -44,18 +46,21 @@ public class QuestionController {
         return "exam-questions";
     }
 
+    @PreAuthorize("hasRole('teacher')")
     @GetMapping("/exam/question-type")
     public String getQuestionTypePage(@RequestParam long examId, Model model) {
         model.addAttribute("examId", examId);
         return "question-types";
     }
 
+    @PreAuthorize("hasRole('teacher')")
     @GetMapping("/exam/create-question/multi-answer")
     public String getMultiAnswerQuestionCreateFrom(@RequestParam long examId, MultipleChoiceQuestion question) {
         return "question-create-multi-choice";
     }
 
 
+    @PreAuthorize("hasRole('teacher')")
     @GetMapping("/exam/create-question/descriptive")
     public String getDescriptiveQuestionCreateFrom(@RequestParam long examId, DescriptiveQuestion question, Model model) {
         model.addAttribute("examId", examId);
@@ -63,6 +68,7 @@ public class QuestionController {
         return "question-create-descriptive";
     }
 
+    @PreAuthorize("hasRole('teacher')")
     @PostMapping("/exam/create-question/descriptive")
     public String saveDescriptiveQuestion(@RequestParam long examId, @Valid DescriptiveQuestion question, @RequestParam int score, Model model, BindingResult result) {
 
@@ -82,6 +88,7 @@ public class QuestionController {
         return getQuestionsByExamId(examId, model);
     }
 
+    @PreAuthorize("hasRole('teacher')")
     @GetMapping("/exam/question-bank/add-exam")
     public String getAddQuestionFromBankForm(@RequestParam long examId, @RequestParam long questionId, Model model) {
         model.addAttribute("examId", examId);
@@ -90,6 +97,7 @@ public class QuestionController {
         return "add-question-from-bank";
     }
 
+    @PreAuthorize("hasRole('teacher')")
     @PostMapping("/exam/question-bank/add-exam")
     public String addQuestionFromBank(@RequestParam long examId, @RequestParam long questionId, @RequestParam int score, Model model) {
         examQuestionService.createQuestionByExamIdQuestionIdScore(examId, questionId, score);

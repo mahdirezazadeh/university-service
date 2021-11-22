@@ -12,10 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -24,6 +21,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
+@RequestMapping("/course")
 public class CourseController {
 
     private final CourseService courseService;
@@ -36,9 +34,9 @@ public class CourseController {
      * @param course a course dto passing to page
      * @return course creation page
      */
-    //    TODO add create-corese operation to db and use it instead of admin role
+
     @PreAuthorize("hasRole('admin')")
-    @GetMapping("/course/create")
+    @GetMapping("/create")
     public String createCourse(@ModelAttribute("course") CourseDTO course) {
         return "create-course";
     }
@@ -52,7 +50,7 @@ public class CourseController {
      * @return returns to course list page
      */
     @PreAuthorize("hasRole('admin')")
-    @PostMapping("/course/create")
+    @PostMapping("/create")
     public String addCourse(@ModelAttribute("course") @Valid CourseDTO courseDTO,
                             BindingResult result, Model model) {
         if (result.hasErrors())
@@ -73,7 +71,7 @@ public class CourseController {
      * @return page for listing courses
      */
     @PreAuthorize("hasRole('admin')")
-    @GetMapping("/course/list")
+    @GetMapping("/list")
     public String courseList(Model model) {
         model.addAttribute("courses", courseService.findAll());
         return "course-list";
@@ -87,17 +85,18 @@ public class CourseController {
      * @return page of course for admins
      */
     @PreAuthorize("hasRole('admin')")
-    @GetMapping("/course")
+    @GetMapping("")
     public String getCourseById(@RequestParam long id, Model model) {
         Optional<Course> course = courseService.findById(id);
-        if (course.isPresent()) {
+        try {
             model.addAttribute("course", course.get());
 //            model.addAttribute("courseStudents", StudentController.getStudentsByCourseId(id));
 //            model.addAttribute("notInvolvedStudents", StudentController.getStudentsByNotCourseId(id));
             return "admin-course";
+        } catch (Exception e) {
+            model.addAttribute("message", "Course does not exist!");
+            return "error-page";
         }
-        model.addAttribute("message", "Course does not exist!");
-        return "error-page";
     }
 
     /**
@@ -108,7 +107,7 @@ public class CourseController {
      * @return return page for editing course teacher
      */
     @PreAuthorize("hasRole('admin')")
-    @GetMapping("/course/edit-teacher")
+    @GetMapping("/edit-teacher")
     public String editTeacher(@RequestParam long courseId, Model model) {
         Optional<Course> course = courseService.findById(courseId);
         if (course.isPresent()) {
@@ -136,7 +135,7 @@ public class CourseController {
      * @return return exam adding page that contains a form to get exam info
      */
     @PreAuthorize("hasRole('teacher')")
-    @GetMapping("/course/add-exam")
+    @GetMapping("/add-exam")
     public String addExam(@RequestParam long courseId, Model model, Exam exam) {
         model.addAttribute("courseId", courseId);
         return "add-exam";

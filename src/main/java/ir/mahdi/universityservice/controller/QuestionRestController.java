@@ -43,6 +43,4 @@ public class QuestionRestController {
     public List<Question<?, ?>> getQuestionBankByExamId(Course course) {
         return questionService.findQuestionsByExam(course);
     }
-
-
 }
