@@ -86,5 +86,10 @@ public class CourseRestController {
         return HttpStatus.ACCEPTED;
 
     }
+
+    public List<Course> getCoursesByStudent(Student student) {
+        List<Course> courses = courseService.findCoursesByStudent(student);
+        return courses;
+    }
 }
 

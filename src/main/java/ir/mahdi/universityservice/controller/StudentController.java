@@ -1,15 +1,21 @@
 package ir.mahdi.universityservice.controller;
 
+import ir.mahdi.universityservice.domain.Course;
 import ir.mahdi.universityservice.domain.Student;
 import ir.mahdi.universityservice.service.StudentService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Controller
@@ -18,6 +24,8 @@ public class StudentController {
     private final StudentService studentService;
 
     private RoleController roleController;
+
+    private CourseRestController courseRestController;
 
     /**
      * a method for getting signup students page
@@ -48,6 +56,22 @@ public class StudentController {
             return "signup-successfully";
         }
         return "signup-student";
+    }
+
+    /**
+     * gets list of courses for teacher
+     *
+     * @param model a model for adding attributes
+     * @return teacher courses list page
+     */
+    @PreAuthorize("hasRole('student')")
+    @GetMapping("/student/course/list")
+    public String getCoursesByTeacher(Model model) {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Student> student = studentService.findByUsername(username);
+        List<Course> courses = courseRestController.getCoursesByStudent(student.get());
+        model.addAttribute("courses", courses);
+        return "student-courses";
     }
 
 }

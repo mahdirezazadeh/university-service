@@ -47,7 +47,7 @@
     <hr class="hr">
 
     <a class="container ticketPointer borderradius10px" th:each="course: ${courses}"
-       th:href="${'/teacher/course?id='+course.getId()}">
+       th:href="${'/student/course?id='+course.getId()}">
         <dev class="container courseInfo">
 
                 <span class="fromTo" th:text="${course.getId()}">

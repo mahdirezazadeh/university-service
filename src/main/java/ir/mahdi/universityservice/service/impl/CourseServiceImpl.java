@@ -2,6 +2,7 @@ package ir.mahdi.universityservice.service.impl;
 
 import ir.mahdi.universityservice.base.service.impl.BaseServiceImpl;
 import ir.mahdi.universityservice.domain.Course;
+import ir.mahdi.universityservice.domain.Student;
 import ir.mahdi.universityservice.domain.Teacher;
 import ir.mahdi.universityservice.repository.CourseRepository;
 import ir.mahdi.universityservice.service.CourseService;
@@ -45,6 +46,11 @@ public class CourseServiceImpl extends BaseServiceImpl<Course, Long, CourseRepos
     @Transactional
     public List<Course> findCoursesByTeacher(Teacher teacher) {
         return repository.findCourseByTeacher(teacher);
+    }
+
+    @Override
+    public List<Course> findCoursesByStudent(Student student) {
+        return repository.findCoursesByStudent(student);
     }
 
 }

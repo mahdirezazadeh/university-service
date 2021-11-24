@@ -53,6 +53,12 @@
         </a>
     </dev>
 
+    <dev class="container" id="adminPanelDiv" sec:authorize="hasRole('student')">
+        <a class="marginleft10px" href="/student/course/list">
+            <button class="btn" type="submit">Show My Courses</button>
+        </a>
+    </dev>
+
 </dev>
 <footer class="container borderradius10px">
     <label>©Unimak</label>
