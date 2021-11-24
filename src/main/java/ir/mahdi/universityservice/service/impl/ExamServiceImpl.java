@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -93,6 +94,14 @@ public class ExamServiceImpl extends BaseServiceImpl<Exam, Long, ExamRepository>
         ExamQuestion examQuestion = new ExamQuestion(findById(examId).get(), question1, score);
         ExamQuestion examQuestion1 = examQuestionService.save(examQuestion);
         return examQuestion1;
+    }
+
+    @Override
+    public List<Exam> findAllByCourseAndNotExams(Course course, List<Exam> doneExams) {
+        List<Long> ids = doneExams.stream().map(p -> p.getId()).collect(Collectors.toList());
+        if (ids.isEmpty())
+            ids.add(0L);
+        return repository.findExamByCourseAndIdNotIn(course, ids);
     }
 
 }

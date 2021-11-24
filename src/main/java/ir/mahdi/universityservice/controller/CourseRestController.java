@@ -64,7 +64,7 @@ public class CourseRestController {
      * @param id id of course
      * @return return Optional Course object
      */
-    @PreAuthorize("hasRole('teacher')")
+    @PreAuthorize("hasAnyRole('teacher', 'student')")
     @GetMapping("/teacher/courseById")
     public Optional<Course> getCourseById(long id) {
         return courseService.findById(id);

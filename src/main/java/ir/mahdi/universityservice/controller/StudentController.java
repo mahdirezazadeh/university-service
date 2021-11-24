@@ -1,7 +1,10 @@
 package ir.mahdi.universityservice.controller;
 
 import ir.mahdi.universityservice.domain.Course;
+import ir.mahdi.universityservice.domain.Exam;
 import ir.mahdi.universityservice.domain.Student;
+import ir.mahdi.universityservice.service.ExamService;
+import ir.mahdi.universityservice.service.StudentExamAnswerService;
 import ir.mahdi.universityservice.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -26,6 +30,12 @@ public class StudentController {
     private RoleController roleController;
 
     private CourseRestController courseRestController;
+
+    private ExamRestController examRestController;
+
+    private StudentExamAnswerService studentExamAnswerService;
+
+    private ExamService examService;
 
     /**
      * a method for getting signup students page
@@ -59,10 +69,10 @@ public class StudentController {
     }
 
     /**
-     * gets list of courses for teacher
+     * gets list of courses for student
      *
      * @param model a model for adding attributes
-     * @return teacher courses list page
+     * @return student courses list page
      */
     @PreAuthorize("hasRole('student')")
     @GetMapping("/student/course/list")
@@ -72,6 +82,35 @@ public class StudentController {
         List<Course> courses = courseRestController.getCoursesByStudent(student.get());
         model.addAttribute("courses", courses);
         return "student-courses";
+    }
+
+    /**
+     * get course page by id
+     *
+     * @param id    id ov course
+     * @param model a model for adding attributes
+     * @return return course page
+     */
+    @PreAuthorize("hasRole('student')")
+    @GetMapping("/student/course")
+    public String getCourseById(@RequestParam long id, Model model) {
+//        find student
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Student> student = studentService.findByUsername(username);
+
+//        find course
+        Optional<Course> course = courseRestController.getCourseById(id);
+
+//        find done exams by students(unavailable exams) for this course
+        List<Exam> doneExams = studentExamAnswerService.findExamsByStudentAndCourse(student.get(), course.get());
+
+//        find undone exams by students(available exams) for this course
+        List<Exam> undoneExams = examService.findAllByCourseAndNotExams(course.get(), doneExams);
+
+
+        model.addAttribute("course", course.get());
+        model.addAttribute("exams", undoneExams);
+        return "student-course";
     }
 
 }

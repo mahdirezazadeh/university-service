@@ -1,6 +1,9 @@
 package ir.mahdi.universityservice.service.impl;
 
 import ir.mahdi.universityservice.base.service.impl.BaseServiceImpl;
+import ir.mahdi.universityservice.domain.Course;
+import ir.mahdi.universityservice.domain.Exam;
+import ir.mahdi.universityservice.domain.Student;
 import ir.mahdi.universityservice.domain.StudentExamAnswer;
 import ir.mahdi.universityservice.repository.StudentExamAnswerRepository;
 import ir.mahdi.universityservice.service.StudentExamAnswerService;
@@ -40,4 +43,8 @@ public class StudentExamAnswerServiceImpl extends BaseServiceImpl<StudentExamAns
         super.deleteById(id);
     }
 
+    @Override
+    public List<Exam> findExamsByStudentAndCourse(Student student, Course course) {
+        return repository.findAllExamsByStudentAndCourse(student, course);
+    }
 }

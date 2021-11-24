@@ -16,4 +16,6 @@ public interface ExamService extends BaseService<Exam, Long> {
     Exam edit(long examId, Exam examAfter);
 
     ExamQuestion addQuestionByExamId(long examId, Question question, int score);
+
+    List<Exam> findAllByCourseAndNotExams(Course course, List<Exam> doneExams);
 }
