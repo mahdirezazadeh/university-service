@@ -80,6 +80,10 @@ footer label {
     margin-right: 10px;
 }
 
+.margintop10px {
+    margin-top: 10px;
+}
+
 .SuccessfulSignUp {
     font-size: 20px;
     font-weight: bold;

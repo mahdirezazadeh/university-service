@@ -66,7 +66,8 @@ public class QuestionController {
 
     @PreAuthorize("hasRole('teacher')")
     @GetMapping("/exam/create-question/multi-answer")
-    public String getMultiAnswerQuestionCreateFrom(@RequestParam long examId, MultipleChoiceQuestion question) {
+    public String getMultiAnswerQuestionCreateFrom(@RequestParam long examId, MultipleChoiceQuestion question, Model model) {
+        model.addAttribute("question", question);
         return "question-create-multi-choice";
     }
 
