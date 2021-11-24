@@ -81,7 +81,7 @@ public class QuestionController {
 
     @PreAuthorize("hasRole('teacher')")
     @PostMapping("/exam/create-question/multi-answer")
-    public String saveMultiAnswerQuestion(@RequestParam long examId, @Valid MultipleChoiceQuestion question, @RequestParam int score,
+    public String saveMultiAnswerQuestion(@RequestParam long examId, @Valid MultipleChoiceQuestion question, @RequestParam float score,
                                           @RequestParam String writeAnswer, Model model, BindingResult result) {
 
         if (result.hasErrors())
@@ -115,7 +115,7 @@ public class QuestionController {
 
     @PreAuthorize("hasRole('teacher')")
     @PostMapping("/exam/create-question/descriptive")
-    public String saveDescriptiveQuestion(@RequestParam long examId, @Valid DescriptiveQuestion question, @RequestParam int score, Model model, BindingResult result) {
+    public String saveDescriptiveQuestion(@RequestParam long examId, @Valid DescriptiveQuestion question, @RequestParam float score, Model model, BindingResult result) {
 
         if (result.hasErrors())
             return "question-create-descriptive";
