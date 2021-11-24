@@ -7,8 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Setter
@@ -18,7 +18,7 @@ public class MultipleChoiceQuestion extends Question<String, String> {
     private static final String QUESTION_TYPE = "MultipleChoice";
 
     @ElementCollection
-    private Set<String> choices = new HashSet<>();
+    private List<String> choices = new ArrayList<>();
 
     @Builder
     public MultipleChoiceQuestion() {
@@ -26,14 +26,14 @@ public class MultipleChoiceQuestion extends Question<String, String> {
     }
 
     @Builder
-    public MultipleChoiceQuestion(Set<String> choices) {
+    public MultipleChoiceQuestion(List<String> choices) {
         this.choices = choices;
         setQuestionType(QUESTION_TYPE);
     }
 
     @Builder
-    public MultipleChoiceQuestion(String title, Course course, String s, String s2, Set<String> choices) {
-        super(title, course, QUESTION_TYPE, s, s2);
+    public MultipleChoiceQuestion(String title, Course course, String question, String answer, List<String> choices) {
+        super(title, course, QUESTION_TYPE, question, answer);
         this.choices = choices;
     }
 }

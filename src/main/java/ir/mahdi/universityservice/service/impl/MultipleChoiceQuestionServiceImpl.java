@@ -21,12 +21,12 @@ public class MultipleChoiceQuestionServiceImpl extends BaseServiceImpl<MultipleC
         super(repository);
     }
 
+
     @Override
     @Transactional
-    public MultipleChoiceQuestion save(MultipleChoiceQuestion descriptiveQuestion) {
-        return super.save(descriptiveQuestion);
+    public MultipleChoiceQuestion save(MultipleChoiceQuestion multipleChoiceQuestion) {
+        return super.save(multipleChoiceQuestion);
     }
-
 
     @Override
     @Transactional

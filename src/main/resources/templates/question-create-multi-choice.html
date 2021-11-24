@@ -36,7 +36,7 @@
 <dev class="container borderradius10px " id="mainDiv">
 
     <div class="wrapper">
-        <form class="form" method="POST" th:action="@{/exam/create-question/descriptive}" th:object="${question}">
+        <form class="form" method="POST" th:action="@{/exam/create-question/multi-answer}" th:object="${question}">
             <h1 class="formh1">Create Descriptive Question</h1>
             <hr class="formhrsep"/>
             <input name="examId" th:value="${examId}" type="hidden">
@@ -71,29 +71,56 @@
 
             <div class="container choiceGroup">
                 <label class="labelStatic">Choices</label>
-                <input id="numberOfChoices" type="hidden" value="2">
+                <input id="numberOfChoices" th:value="${choices.size()}" type="hidden">
 
-
-                <div class="container" id="choiceDiv0">
+                <div class="container" th:each="choice, itemStat : *{choices}"
+                     th:id="${'choiceDiv'+__${itemStat.index}__}">
                     <div class="container">
-                        <input checked class="choiceRadio" name="writeAnswer" type="radio" value="choice0">
+                        <input checked class="choiceRadio" name="writeAnswer" th:value="${__${itemStat.index}__}"
+                               type="radio">
                     </div>
                     <div class="container AnswerText">
-                        <input class="input" id="choice0" name="choice" required="required" type="text"/>
+                        <input class="input choiceInput" name="choice"
+                               required="required" th:field="*{choices[__${itemStat.index}__]}"
+                               th:id="${'choice'+__${itemStat.index}__}"
+                               type="text"/>
                     </div>
                 </div>
 
-                <div class="container" id="choiceDiv1">
-                    <div class="container">
-                        <input class="choiceRadio" name="writeAnswer" type="radio" value="choice1">
-                    </div>
-                    <div class="container AnswerText">
-                        <input class="input" id="choice1" name="choice" required="required" type="text"/>
-                    </div>
-                    <!--                    <div class="container AnswerText">-->
-                    <!--                        <input class="btn margintop10px marginleft10px" name="removeChoice" id="rmChoice${numberOfChoice}" type="button" value="remove"/>-->
-                    <!--                    </div>-->
-                </div>
+
+                <!--                <div th:each="choice, itemStat : *{choices}" class="container"-->
+                <!--                     th:id="${'choiceDiv'+__${itemStat.index}__}">-->
+                <!--                    <div class="container">-->
+                <!--                        <input checked class="choiceRadio" name="writeAnswer" type="radio"-->
+                <!--                               th:value="${'choice'+__${itemStat.index}__}">-->
+                <!--                    </div>-->
+                <!--                    <div class="container AnswerText">-->
+                <!--                        <input class="input" th:id="${'choice'+__${itemStat.index}__}"-->
+                <!--                               th:field="*{choices[__${itemStat.index}__]}" name="choice" required="required"-->
+                <!--                               type="text"/>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+
+                <!--                <div class="container" id="choiceDiv0">-->
+                <!--                    <div class="container">-->
+                <!--                        <input checked class="choiceRadio" name="writeAnswer" type="radio" value="choice0">-->
+                <!--                    </div>-->
+                <!--                    <div class="container AnswerText">-->
+                <!--                        <input class="input" id="choice0" name="choice" required="required" type="text"/>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+
+                <!--                <div class="container" id="choiceDiv1">-->
+                <!--                    <div class="container">-->
+                <!--                        <input class="choiceRadio" name="writeAnswer" type="radio" value="choice1">-->
+                <!--                    </div>-->
+                <!--                    <div class="container AnswerText">-->
+                <!--                        <input class="input" id="choice1" name="choice" required="required" type="text"/>-->
+                <!--                    </div>-->
+                <!--                    &lt;!&ndash;                    <div class="container AnswerText">&ndash;&gt;-->
+                <!--                    &lt;!&ndash;                        <input class="btn margintop10px marginleft10px" name="removeChoice" id="rmChoice${numberOfChoice}" type="button" value="remove"/>&ndash;&gt;-->
+                <!--                    &lt;!&ndash;                    </div>&ndash;&gt;-->
+                <!--                </div>-->
 
 
                 <div class="btn-box">

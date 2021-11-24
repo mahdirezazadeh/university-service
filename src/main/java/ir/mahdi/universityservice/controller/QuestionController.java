@@ -6,6 +6,7 @@ import ir.mahdi.universityservice.domain.MultipleChoiceQuestion;
 import ir.mahdi.universityservice.mapper.ExamMapper;
 import ir.mahdi.universityservice.service.DescriptiveQuestionService;
 import ir.mahdi.universityservice.service.ExamQuestionService;
+import ir.mahdi.universityservice.service.MultipleChoiceQuestionService;
 import ir.mahdi.universityservice.service.QuestionService;
 import ir.mahdi.universityservice.service.dto.ExamDTO;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,8 @@ public class QuestionController {
     private final ExamRestController examRestController;
 
     private final DescriptiveQuestionService descriptiveQuestionService;
+
+    private final MultipleChoiceQuestionService multipleChoiceQuestionService;
 
     private final ExamMapper examMapper;
 
@@ -67,8 +70,38 @@ public class QuestionController {
     @PreAuthorize("hasRole('teacher')")
     @GetMapping("/exam/create-question/multi-answer")
     public String getMultiAnswerQuestionCreateFrom(@RequestParam long examId, MultipleChoiceQuestion question, Model model) {
+        List<String> choices = question.getChoices();
+        choices.add("");
+        choices.add(" ");
         model.addAttribute("question", question);
+        model.addAttribute("choices", choices);
+        model.addAttribute("examId", examId);
         return "question-create-multi-choice";
+    }
+
+    @PreAuthorize("hasRole('teacher')")
+    @PostMapping("/exam/create-question/multi-answer")
+    public String saveMultiAnswerQuestion(@RequestParam long examId, @Valid MultipleChoiceQuestion question, @RequestParam int score,
+                                          @RequestParam String writeAnswer, Model model, BindingResult result) {
+
+        if (result.hasErrors())
+            return "question-create-multi-choice";
+
+        question.setCourse(examRestController.getCourseByExamId(examId));
+
+        question.setAnswer(writeAnswer);
+
+        MultipleChoiceQuestion multipleChoiceQuestion = multipleChoiceQuestionService.save(question);
+
+
+        ExamQuestion examQuestion = new ExamQuestion(
+                examMapper.convertDTOToEntity(examRestController.getExamById(examId)),
+                multipleChoiceQuestion,
+                score
+        );
+        examQuestionService.save(examQuestion);
+
+        return getQuestionsByExamId(examId, model);
     }
 
 

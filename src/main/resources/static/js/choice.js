@@ -5,10 +5,10 @@ $(document).ready(function () {
         $(`#choiceDiv${numberOfChoice - 1}`).after(`
                 <div class="container" id="choiceDiv${numberOfChoice}">
                     <div class="container">
-                        <input  class="choiceRadio"  name="writeAnswer" type="radio" value="choice${numberOfChoice}">
+                        <input class="choiceRadio" name="writeAnswer" type="radio" value="${numberOfChoice}">
                     </div>
                     <div class="container AnswerText">
-                        <input class="input" name="choice" id="choice${numberOfChoice}" required="required" type="text"/>
+                        <input class="input" name="choices[${numberOfChoice}]" id="choice${numberOfChoice}" required="required" type="text"/>
                     </div>
                 </div>
         `)
@@ -92,9 +92,9 @@ $(document).ready(function () {
 })
 
 
-$(`button[name="removeChoice"]`).on('click', `button[name="removeChoice"]`, function () {
-    console.log($(this));
-})
+// $(`button[class="input choiceInput"]`).on('change', `button[name="removeChoice"]`, function () {
+//     console.log($(this));
+// })
 
 
 
