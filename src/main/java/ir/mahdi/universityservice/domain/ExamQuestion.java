@@ -28,5 +28,5 @@ public class ExamQuestion extends BaseEntity<Long> {
     @ManyToOne
     private Question<?, ?> question;
 
-    private int score;
+    private float score;
 }
