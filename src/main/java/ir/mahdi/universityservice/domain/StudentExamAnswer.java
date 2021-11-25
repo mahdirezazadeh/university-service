@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "StudentExamAnswer", uniqueConstraints = {
@@ -30,7 +31,7 @@ public class StudentExamAnswer extends BaseEntity<Long> {
     private LocalDateTime endTime;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<StudentQuestionAnswer> studentAnswers;
+    private List<StudentQuestionAnswer> studentAnswers = new ArrayList<>();
 
     public void setEndTime(int durationInMinutes) {
         LocalDateTime createDate = getCreateDate();
