@@ -3,8 +3,10 @@ package ir.mahdi.universityservice.controller;
 import ir.mahdi.universityservice.domain.Exam;
 import ir.mahdi.universityservice.domain.StudentExamAnswer;
 import ir.mahdi.universityservice.domain.base.Question;
+import ir.mahdi.universityservice.mapper.StudentQuestionMapper;
 import ir.mahdi.universityservice.service.ExamService;
 import ir.mahdi.universityservice.service.StudentExamAnswerService;
+import ir.mahdi.universityservice.service.dto.StudentQuestionDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +31,10 @@ public class ExamController {
     private final TeacherController teacherController;
 
     private final CourseRestController courseRestController;
+
     private final QuestionRestController questionRestController;
+
+    private final StudentQuestionMapper studentQuestionMapper;
 
     /**
      * creates exam for course, authorized for teachers
@@ -109,8 +114,10 @@ public class ExamController {
             return "error-page";
         }
 
+        List<StudentQuestionDTO> studentQuestionDTOS = studentQuestionMapper.convertListQuestionToDTO(studentExamAnswer.getStudentAnswers());
+
         model.addAttribute("studentExamAnswerId", studentExamAnswer.getId());
-        model.addAttribute("questions", studentExamAnswer.getStudentAnswers());
+        model.addAttribute("questions", studentQuestionDTOS);
 
         return "start-exam";
     }

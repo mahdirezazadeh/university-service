@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 @Entity
 @Getter
@@ -15,23 +14,25 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentQuestionAnswer extends BaseEntity<Long> {
-    @ManyToOne
-    private ExamQuestion examQuestion;
+    private long examQuestionId;
 
     private String answer;
+
+    private float maxScore;
 
     private float score;
 
     public StudentQuestionAnswer(ExamQuestion question) {
-        examQuestion = question;
+        examQuestionId = question.getId();
         answer = "";
         score = 0;
+        maxScore = question.getScore();
     }
 
     public void setScore(float score) {
         if (score < 0)
             throw new RuntimeException("score can not be negative!");
-        if (score > examQuestion.getScore())
+        if (score > maxScore)
             throw new RuntimeException("score can not be more than question score!");
         this.score = score;
     }

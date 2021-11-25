@@ -1,21 +1,29 @@
 package ir.mahdi.universityservice.mapper;
 
+import ir.mahdi.universityservice.domain.ExamQuestion;
 import ir.mahdi.universityservice.domain.MultipleChoiceQuestion;
 import ir.mahdi.universityservice.domain.StudentQuestionAnswer;
 import ir.mahdi.universityservice.domain.base.Question;
+import ir.mahdi.universityservice.service.ExamQuestionService;
 import ir.mahdi.universityservice.service.dto.StudentQuestionDTO;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class StudentQuestionMapper {
+
+    private ExamQuestionService examQuestionService;
+
     public StudentQuestionDTO convertQuestionToDTO(StudentQuestionAnswer studentQuestionAnswer) {
-        Question<?, ?> question = studentQuestionAnswer.getExamQuestion().getQuestion();
+        ExamQuestion examQuestion = examQuestionService.findById(studentQuestionAnswer.getExamQuestionId()).get();
+        Question<?, ?> question = examQuestion.getQuestion();
         StudentQuestionDTO studentQuestionDTO =
                 new StudentQuestionDTO(
-                        studentQuestionAnswer.getExamQuestion().getScore(),
+                        examQuestion.getScore(),
                         (String) question.getQuestion(),
                         studentQuestionAnswer.getAnswer());
         studentQuestionDTO.setId(studentQuestionAnswer.getId());
@@ -35,7 +43,11 @@ public class StudentQuestionMapper {
         List<StudentQuestionDTO> studentQuestionDTOS = new ArrayList<>();
         for (StudentQuestionAnswer studentQuestionAnswer : studentQuestionAnswers
         ) {
-            studentQuestionDTOS.add(convertQuestionToDTO(studentQuestionAnswer));
+            try {
+                studentQuestionDTOS.add(convertQuestionToDTO(studentQuestionAnswer));
+            } catch (Exception e) {
+
+            }
         }
         return studentQuestionDTOS;
     }
