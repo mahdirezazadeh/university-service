@@ -27,10 +27,11 @@ public class StudentExamAnswerServiceImpl extends BaseServiceImpl<StudentExamAns
     private ExamQuestionService examQuestionService;
 
     @Autowired
-    public StudentExamAnswerServiceImpl(StudentExamAnswerRepository repository, StudentService studentService, ExamService examService) {
+    public StudentExamAnswerServiceImpl(StudentExamAnswerRepository repository, StudentService studentService, ExamService examService, ExamQuestionService examQuestionService) {
         super(repository);
         this.studentService = studentService;
         this.examService = examService;
+        this.examQuestionService = examQuestionService;
     }
 
     @Override
