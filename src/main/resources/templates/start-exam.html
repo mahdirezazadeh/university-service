@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta th:content="${_csrf.token}" th:name="_csrf"/>
+    <meta th:content="${_csrf.headerName}" th:name="_csrf_header"/>
+    <title>Exam Questions</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/input.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ticketStyle.css}"/>
+    <link href="/static/css/style.css" rel="stylesheet"/>
+    <link href="/static/css/input.css" rel="stylesheet"/>
+    <link href="/static/css/ticketStyle.css" rel="stylesheet"/>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script crossorigin="anonymous" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+    <script language="JavaScript" th:src="@{/js/course.js}" type="text/javascript"></script>
+</head>
+
+<body class="container">
+<dev class="container borderradius10px" id="heading">
+    <dev class="container" id="loginbuttonDiv">
+        <a class="marginleft10px" href="/sign-up">
+            <button class="btn" type="submit">Sign-Up</button>
+        </a>
+        <a class="marginleft10px" href="/login">
+            <button class="btn" type="submit">Login</button>
+        </a>
+    </dev>
+    <dev class="container" id="homebuttonDiv">
+        <a class="marginright10px" href="/home">
+            <button class="btn btn-submit" type="submit">home</button>
+        </a>
+    </dev>
+</dev>
+
+
+<dev class="container borderradius10px " id="mainDiv">
+
+    <h1 class="formh1" th:text="${exam.getTitle()}">Exam title</h1>
+
+    <hr class="formhrsep">
+    <br>
+
+    <Div class="container course2 borderradius10px">
+
+        <dev class="container courseDateTime">
+            <span th:text="${'Duration: '+exam.getDuration()+' minutes'}">Duration: 20 minutes</span>
+        </dev>
+        <dev class="container courseDateTime">
+            <span id="examScore" th:text="${'Exam Score: '+examScore}">exam Score: 22</span>
+        </dev>
+        <dev class="container description" sec:authorize="hasRole('teacher')">
+            <span th:text="${exam.getDescription()}">bluh bluh...</span>
+        </dev>
+
+        <dev class="container courseDateTime" sec:authorize="hasRole('teacher')">
+            <a class="marginleft10px" th:href="${'/exam/question-type?examId='+exam.getId()}">
+                <button class="btn" type="submit">Add Question</button>
+            </a>
+        </dev>
+    </Div>
+</dev>
+
+<dev class="container borderradius10px" id="mainDiv" th:if="${questions.size()>0}">
+
+    <input name="examId" th:value="${exam.getId()}" type="hidden"/>
+
+    <h1 class="formh1">Question List</h1>
+
+    <hr class="formhrsep">
+
+    <div class="container ticketA borderradius10px">
+        <div class="container width25pc">
+            <span class="fromTo">ID</span>
+        </div>
+        <div class="container width25pc">
+            <span class="fromTo">Title</span>
+        </div>
+        <div class="container width25pc">
+            <span class="fromTo">Question Type</span>
+        </div>
+        <div class="container width25pc">
+            <span class="fromTo">score</span>
+        </div>
+        <!--        <div class="container width25pc">-->
+        <!--            <span class="fromTo">Question</span>-->
+        <!--        </div>-->
+
+        <div class="container width25pc">
+            &nbsp;
+        </div>
+    </div>
+
+    <div class="container ticketA borderradius10px" th:each="questionAnswer: ${questions}"
+         th:id="${'question'+ questionAnswer.getId()}">
+        <div class="container width25pc">
+            <span class="fromTo" th:text="${question.getQuestion().getQuestionType()}">question Type</span>
+        </div>
+        <div class="container width25pc">
+            <span class="fromTo" th:id="${'score'+question.getId()}" th:text="${question.getScore()}">score</span>
+        </div>
+        <!--        <div class="container width25pc">-->
+        <!--            <span class="fromTo" th:text="${question.getQuestion()}">question</span>-->
+        <!--        </div>-->
+
+        <div class="container width25pc">
+            <!--            <a class="marginright10px" th:href="${'/question?id='+ question.getId()}">-->
+            <!--                <button class="btn btn-submit" type="submit">Edit</button>-->
+            <!--            </a>-->
+
+            <input class="btn btn-submit" name="remove_question" th:id="${question.getId()}"
+                   type="button" value="remove">
+
+        </div>
+
+    </div>
+</dev>
+
+<footer class="container borderradius10px">
+    <label>©Unimak</label>
+</footer>
+
+</body>
+
+</html>

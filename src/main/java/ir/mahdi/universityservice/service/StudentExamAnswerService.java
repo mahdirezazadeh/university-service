@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface StudentExamAnswerService extends BaseService<StudentExamAnswer, Long> {
     List<Exam> findExamsByStudentAndCourse(Student student, Course course);
+
+    StudentExamAnswer startExam(Exam exam, String username);
 }

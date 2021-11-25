@@ -22,6 +22,12 @@ public class StudentQuestionAnswer extends BaseEntity<Long> {
 
     private float score;
 
+    public StudentQuestionAnswer(ExamQuestion question) {
+        examQuestion = question;
+        answer = "";
+        score = 0;
+    }
+
     public void setScore(float score) {
         if (score < 0)
             throw new RuntimeException("score can not be negative!");

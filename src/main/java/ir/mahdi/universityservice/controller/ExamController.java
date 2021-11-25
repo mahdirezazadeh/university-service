@@ -1,10 +1,13 @@
 package ir.mahdi.universityservice.controller;
 
 import ir.mahdi.universityservice.domain.Exam;
+import ir.mahdi.universityservice.domain.StudentExamAnswer;
 import ir.mahdi.universityservice.domain.base.Question;
 import ir.mahdi.universityservice.service.ExamService;
+import ir.mahdi.universityservice.service.StudentExamAnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,8 @@ import java.util.List;
 public class ExamController {
 
     private final ExamService examService;
+
+    private final StudentExamAnswerService studentExamAnswerService;
 
     private final TeacherController teacherController;
 
@@ -83,18 +88,31 @@ public class ExamController {
         return "question-bank";
     }
 
-//    @PreAuthorize("hasRole('teacher')")
-//    @GetMapping("/exam/add-question")
-//    public String addQuestionToExamById(@RequestParam long examId) {
-//        return "create-question";
-//    }
-//
-//    //    Its Not Acceptable
-//    @PreAuthorize("hasRole('teacher')")
-//    @PostMapping("/exam/add-question")
-//    public String createQuestionForExam(@ModelAttribute("question") Question question, @RequestParam long examId, @RequestParam int score, Model model) {
-//        ExamQuestion examQuestion = examService.addQuestionByExamId(examId, question, score);
-//        return teacherController.getCourseById(examQuestion.getExam().getCourse().getId(), model);
-//    }
+    @PreAuthorize("hasRole('student')")
+    @GetMapping("/exam/start")
+    public String startExamForStudent(@RequestParam long examId, Model model) {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        StudentExamAnswer studentExamAnswer;
+        try {
+            Exam exam;
+            try {
+                exam = examService.findById(examId).get();
+            } catch (Exception e) {
+                model.addAttribute("message", "Exam does not exist!");
+                return "error-page";
+            }
+            studentExamAnswer = studentExamAnswerService.startExam(exam, username);
+        } catch (Exception e) {
+            String message = e.getMessage();
+            model.addAttribute("message", "Exam have been done by student!");
+            return "error-page";
+        }
+
+        model.addAttribute("studentExamAnswerId", studentExamAnswer.getId());
+        model.addAttribute("questions", studentExamAnswer.getStudentAnswers());
+
+        return "start-exam";
+    }
 
 }

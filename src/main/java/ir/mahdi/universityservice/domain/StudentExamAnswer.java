@@ -1,10 +1,13 @@
 package ir.mahdi.universityservice.domain;
 
 import ir.mahdi.universityservice.base.BaseEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Table(name = "StudentExamAnswer", uniqueConstraints = {
@@ -13,13 +16,24 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class StudentExamAnswer extends BaseEntity<Long> {
+    private static final String END_TIME = "end_time";
     @ManyToOne
     private Exam exam;
 
     @ManyToOne
     private Student student;
 
-    @OneToMany
+    @Column(name = END_TIME)
+    private LocalDateTime endTime;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<StudentQuestionAnswer> studentAnswers;
+
+    public void setEndTime(int durationInMinutes) {
+        LocalDateTime createDate = getCreateDate();
+        endTime = createDate.plusMinutes(durationInMinutes).plusSeconds(10);
+    }
 }

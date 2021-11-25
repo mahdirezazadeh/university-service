@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/input.css}"/>
+</head>
+
+<body class="container">
+<dev class="container borderradius10px" id="heading">
+    <dev class="container" id="loginbuttonDiv">
+        <a class="marginleft10px" href="/sign-up">
+            <button class="btn " type="submit">Sign-Up</button>
+        </a>
+        <a class="marginleft10px" href="/login">
+            <button class="btn" type="submit">Login</button>
+        </a>
+    </dev>
+    <dev class="container" id="homebuttonDiv">
+        <a class="marginright10px" href="/home">
+            <button class="btn btn-submit" type="submit">home</button>
+        </a>
+    </dev>
+</dev>
+
+
+<dev class="container borderradius10px " id="mainDiv">
+    <div class="wrapper">
+        <span class="SuccessfulSignUp" th:text="${message}"></span>
+    </div>
+</dev>
+
+<footer class="container borderradius10px">
+    <span>©Unimak</span>
+</footer>
+
+</body>
+
+</html>
