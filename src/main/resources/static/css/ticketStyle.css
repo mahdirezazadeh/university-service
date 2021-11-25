@@ -9,6 +9,19 @@
     text-decoration: none;
 }
 
+.questionOnExam {
+    width: 98.5%;
+    height: max-content;
+    background-color: rgba(226, 226, 226, 0.596);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    flex-direction: column;
+    justify-content: space-between;
+    /* cursor: pointer; */
+    /*text-decoration: none;*/
+}
+
+
 .teacher {
     width: 98.5%;
     height: max-content;
@@ -49,6 +62,13 @@
     height: 50px;
     justify-content: space-around;
     align-items: center;
+}
+
+.questionText {
+    padding-left: 1%;
+    width: 90%;
+    height: 50px;
+    align-items: start;
 }
 
 .ticketPointer {
