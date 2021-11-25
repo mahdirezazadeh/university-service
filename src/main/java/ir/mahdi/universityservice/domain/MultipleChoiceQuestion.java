@@ -36,4 +36,8 @@ public class MultipleChoiceQuestion extends Question<String, String> {
         super(title, course, QUESTION_TYPE, question, answer);
         this.choices = choices;
     }
+
+    public static String getQuestionTypeString() {
+        return QUESTION_TYPE;
+    }
 }
