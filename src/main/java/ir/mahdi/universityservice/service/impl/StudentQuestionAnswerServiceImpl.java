@@ -1,9 +1,12 @@
 package ir.mahdi.universityservice.service.impl;
 
 import ir.mahdi.universityservice.base.service.impl.BaseServiceImpl;
+import ir.mahdi.universityservice.domain.MultipleChoiceQuestion;
 import ir.mahdi.universityservice.domain.StudentExamAnswer;
 import ir.mahdi.universityservice.domain.StudentQuestionAnswer;
+import ir.mahdi.universityservice.domain.base.Question;
 import ir.mahdi.universityservice.repository.StudentQuestionAnswerRepository;
+import ir.mahdi.universityservice.service.ExamQuestionService;
 import ir.mahdi.universityservice.service.StudentExamAnswerService;
 import ir.mahdi.universityservice.service.StudentQuestionAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +24,13 @@ public class StudentQuestionAnswerServiceImpl extends BaseServiceImpl<StudentQue
 
     private final StudentExamAnswerService examAnswerService;
 
+    private final ExamQuestionService examQuestionService;
+
     @Autowired
-    public StudentQuestionAnswerServiceImpl(StudentQuestionAnswerRepository repository, StudentExamAnswerService examAnswerService) {
+    public StudentQuestionAnswerServiceImpl(StudentQuestionAnswerRepository repository, StudentExamAnswerService examAnswerService, ExamQuestionService examQuestionService) {
         super(repository);
         this.examAnswerService = examAnswerService;
+        this.examQuestionService = examQuestionService;
     }
 
     @Override
@@ -61,6 +67,13 @@ public class StudentQuestionAnswerServiceImpl extends BaseServiceImpl<StudentQue
             throw new RuntimeException("exam is unavailable");
         }
         studentQuestionAnswer.setAnswer(studentAnswer);
+        long examQuestionId = studentQuestionAnswer.getExamQuestionId();
+        Question<?, ?> question = examQuestionService.findById(examQuestionId).get().getQuestion();
+        if (question.getQuestionType().equals(MultipleChoiceQuestion.getQuestionTypeString())) {
+            if (question.getAnswer().equals(studentAnswer)) {
+                studentQuestionAnswer.setScore(studentQuestionAnswer.getMaxScore());
+            } else studentQuestionAnswer.setScore(0);
+        }
         save(studentQuestionAnswer);
     }
 }

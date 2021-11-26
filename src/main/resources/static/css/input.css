@@ -163,6 +163,17 @@
     /*left: -10px;*/
 }
 
+.alignCenter {
+    align-items: end;
+}
+
+.choiceGroup2 {
+    /*position: relative;*/
+    /*margin: 45px 0;*/
+    flex-direction: row;
+    /*left: -10px;*/
+}
+
 .choiceRadio {
     margin-top: 20px;
 }

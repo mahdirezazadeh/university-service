@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class StudentQuestionDTO extends BaseDTO<Long> {
     private float maxScore;
+    private float score;
     private String question;
     private String studentAnswer;
     private String questionType;

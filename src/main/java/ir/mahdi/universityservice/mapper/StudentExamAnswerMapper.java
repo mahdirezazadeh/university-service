@@ -15,6 +15,7 @@ public class StudentExamAnswerMapper {
         studentExamAnswersDTO.setStudentUsername(studentExamAnswer.getStudent().getUsername());
         studentExamAnswersDTO.setStudentFullName(studentExamAnswer.getStudent().getFullName());
         studentExamAnswersDTO.setExamAnswerId(studentExamAnswer.getId());
+        studentExamAnswersDTO.setExamId(studentExamAnswer.getExam().getId());
         return studentExamAnswersDTO;
     }
 

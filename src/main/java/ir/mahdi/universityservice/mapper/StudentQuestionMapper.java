@@ -39,12 +39,48 @@ public class StudentQuestionMapper {
         return studentQuestionDTO;
     }
 
+    public StudentQuestionDTO convertQuestionToDTOForTeacher(StudentQuestionAnswer studentQuestionAnswer) {
+        ExamQuestion examQuestion = examQuestionService.findById(studentQuestionAnswer.getExamQuestionId()).get();
+        Question<?, ?> question = examQuestion.getQuestion();
+        StudentQuestionDTO studentQuestionDTO =
+                new StudentQuestionDTO(
+                        examQuestion.getScore(),
+                        (String) question.getQuestion(),
+                        studentQuestionAnswer.getAnswer());
+        studentQuestionDTO.setId(studentQuestionAnswer.getId());
+        studentQuestionDTO.setQuestionType(question.getQuestionType());
+        studentQuestionDTO.setScore(studentQuestionAnswer.getScore());
+
+//        if question is multiple choice question map choices
+        if (studentQuestionDTO.getQuestionType().equals(MultipleChoiceQuestion.getQuestionTypeString())) {
+            MultipleChoiceQuestion multipleChoiceQuestion = (MultipleChoiceQuestion) question;
+            for (String choice : multipleChoiceQuestion.getChoices()) {
+                studentQuestionDTO.getChoices().add(choice);
+            }
+        }
+        return studentQuestionDTO;
+    }
+
     public List<StudentQuestionDTO> convertListQuestionToDTO(List<StudentQuestionAnswer> studentQuestionAnswers) {
         List<StudentQuestionDTO> studentQuestionDTOS = new ArrayList<>();
         for (StudentQuestionAnswer studentQuestionAnswer : studentQuestionAnswers
         ) {
             try {
                 studentQuestionDTOS.add(convertQuestionToDTO(studentQuestionAnswer));
+            } catch (Exception e) {
+
+            }
+        }
+        return studentQuestionDTOS;
+    }
+
+
+    public List<StudentQuestionDTO> convertListQuestionToDTOForTeacher(List<StudentQuestionAnswer> studentQuestionAnswers) {
+        List<StudentQuestionDTO> studentQuestionDTOS = new ArrayList<>();
+        for (StudentQuestionAnswer studentQuestionAnswer : studentQuestionAnswers
+        ) {
+            try {
+                studentQuestionDTOS.add(convertQuestionToDTOForTeacher(studentQuestionAnswer));
             } catch (Exception e) {
 
             }

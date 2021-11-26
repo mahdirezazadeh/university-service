@@ -132,10 +132,28 @@ public class ExamController {
     public String correctStudentsAnswers(@RequestParam long examId, Model model) {
         List<StudentExamAnswer> studentExamAnswers = studentExamAnswerService.findByExamId(examId);
         List<StudentExamAnswersDTO> studentExamAnswersDTOS = studentExamAnswerMapper.convertListStudentExamAnswerToDTO(studentExamAnswers);
-
         model.addAttribute("studentExamAnswersDTOS", studentExamAnswersDTOS);
-
         return "exam-students-answers";
+    }
+
+    @PreAuthorize("hasRole('teacher')")
+    @GetMapping("/examAnswer")
+    public String getCorrectStudentsAnswersPage(@RequestParam long examAnswerId, Model model) {
+        try {
+            StudentExamAnswer studentExamAnswer = studentExamAnswerService.findById(examAnswerId).get();
+
+            List<StudentQuestionDTO> studentQuestionDTOS =
+                    studentQuestionMapper.
+                            convertListQuestionToDTOForTeacher(studentExamAnswer.getStudentAnswers());
+
+            model.addAttribute("questions", studentQuestionDTOS);
+            model.addAttribute("studentExamAnswerId", examAnswerId);
+
+            return "correct-exam";
+        } catch (Exception e) {
+            model.addAttribute("message", "exam answer does not exist!");
+            return "error-page";
+        }
     }
 
 }
