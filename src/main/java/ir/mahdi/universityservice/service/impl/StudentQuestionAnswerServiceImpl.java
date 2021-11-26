@@ -76,4 +76,12 @@ public class StudentQuestionAnswerServiceImpl extends BaseServiceImpl<StudentQue
         }
         save(studentQuestionAnswer);
     }
+
+    @Override
+    @Transactional
+    public void saveAnswerScore(long questionId, float teacherGivenScore) {
+        StudentQuestionAnswer studentQuestionAnswer = findById(questionId).get();
+        studentQuestionAnswer.setScore(teacherGivenScore);
+        save(studentQuestionAnswer);
+    }
 }

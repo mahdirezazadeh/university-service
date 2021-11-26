@@ -8,6 +8,7 @@ import ir.mahdi.universityservice.service.StudentExamAnswerService;
 import ir.mahdi.universityservice.service.StudentQuestionAnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -74,5 +75,20 @@ public class QuestionRestController {
                 setQuestionAnswer(studentExamAnswerId, Long.parseLong(answer[0]), answer[1]);
         }
         return HttpStatus.ACCEPTED;
+    }
+
+
+    @PreAuthorize("hasRole('teacher')")
+    @PostMapping("/question/save-score")
+    public ResponseEntity<? extends Object> setAnswerScore(@RequestParam long questionId, @RequestParam float teacherGivenScore) {
+        try {
+            questionAnswerService.saveAnswerScore(questionId, teacherGivenScore);
+            return new ResponseEntity<Object>("score saved", HttpStatus.ACCEPTED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<Error>(new Error(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<Error>(new Error(), HttpStatus.NOT_FOUND);
+        }
+
     }
 }

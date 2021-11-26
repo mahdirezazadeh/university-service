@@ -185,3 +185,16 @@
 .choices {
     flex-direction: column;
 }
+
+.input2 {
+    background: rgba(0, 255, 252, 0.48);
+    color: black;
+    font-size: 18px;
+    padding: 10px 10px 5px 5px;
+    margin-right: 5px;
+    display: block;
+    width: 100px;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid black;
+}
