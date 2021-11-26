@@ -21,6 +21,7 @@
             src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
     <script language="JavaScript" th:src="@{/js/course.js}" type="text/javascript"></script>
+    <script language="JavaScript" th:src="@{/js/exam.js}" type="text/javascript"></script>
 </head>
 
 <dev class="container borderradius10px" id="heading">
@@ -48,33 +49,11 @@
 
     <hr class="formhrsep">
 
-    <!--    <div class="container ticketA borderradius10px">-->
-    <!--        <div class="container width25pc">-->
-    <!--            <span class="fromTo">ID</span>-->
-    <!--        </div>-->
-    <!--        <div class="container width25pc">-->
-    <!--            <span class="fromTo">Title</span>-->
-    <!--        </div>-->
-    <!--        <div class="container width25pc">-->
-    <!--            <span class="fromTo">Question Type</span>-->
-    <!--        </div>-->
-    <!--        <div class="container width25pc">-->
-    <!--            <span class="fromTo">score</span>-->
-    <!--        </div>-->
-    <!--        &lt;!&ndash;        <div class="container width25pc">&ndash;&gt;-->
-    <!--        &lt;!&ndash;            <span class="fromTo">Question</span>&ndash;&gt;-->
-    <!--        &lt;!&ndash;        </div>&ndash;&gt;-->
-
-    <!--        <div class="container width25pc">-->
-    <!--            &nbsp;-->
-    <!--        </div>-->
-    <!--    </div>-->
-
-    <!--         th:if="${!question.getQuestionType().equals('MultipleChoice')}"-->
-    <div class="container questionOnExam borderradius10px" th:each="question, itemStat : ${questions}"
+    <div class="container questionOnExam borderradius10px" th:each="question, questionNumber : ${questions}"
          th:id="${'question'+ question.getId()}">
         <div class="container questionText">
             <span class="fromTo" th:text="${question.getQuestion()}">Question</span>
+            <span class="fromTo" th:text="${question.getMaxScore()+' points'}">12 points</span>
         </div>
 
 
@@ -82,34 +61,36 @@
             <input class="input" th:id="${'studentAnswerQId'+question.getId()}"
                    th:name="${'studentAnswerQId'+question.getId()}"
                    th:value="${question.getStudentAnswer()}"
-                   type="text">
+                   maxlength="2000" type="text">
         </div>
         <div>
             &nbsp;
         </div>
         <div class="container questionText" th:if="${question.getQuestionType().equals('Descriptive')}">
-            <input class="btn btn-submit" name="saveQuestion" th:id="${question.getId()}"
+            <input class="btn btn-submit" name="saveQuestion" th:id="${question.getId()+','+questionNumber.index}"
                    type="button" value="save">
         </div>
 
-        <div class="container questionText" th:if="${question.getQuestionType().equals('MultipleChoice')}">
+        <!--        <div class="container questionText" >-->
 
-
-            <div class="container" th:each="choice, itemStat2 : ${question.getChoices()}"
-                 th:id="${'choiceDiv'+__${itemStat2.index}__}">
-                <div class="container">
-                    <input class="choiceRadio" th:id="${'studentAnswerQId'+__${itemStat2.index}__}"
-                           th:name="${'studentAnswerQId'+question.getId()}"
-                           th:value="${__${itemStat2.index}__}"
-                           type="radio">
-                </div>
-                <div class="container AnswerText">
-                    <label th:for="${'studentAnswerQId'+__${itemStat2.index}__}" th:text="${choice}"></label>
-                </div>
+        <div class="container choices" th:each="choice, choiceIndex : ${question.getChoices()}"
+             th:id="${'choiceDiv'+__${choiceIndex.index}__}"
+             th:if="${question.getQuestionType().equals('MultipleChoice')}">
+            <div class="container choiceGroup">
+                <input class="container choiceAnswer"
+                       th:id="${'studentAnswerQId'+question.getId()+','+__${choiceIndex.index}__}"
+                       th:name="${'studentAnswerQId'+question.getId()}"
+                       th:value="${__${choiceIndex.index}__}"
+                       type="radio">
+                <label class="container" th:for="${'studentAnswerQId'+question.getId()+','+__${choiceIndex.index}__}"
+                       th:text="${choice}">label</label>
             </div>
-
-
+            <div class="container AnswerText">
+            </div>
         </div>
+
+
+        <!--        </div>-->
 
     </div>
 

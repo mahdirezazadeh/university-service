@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
@@ -14,12 +15,22 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentQuestionAnswer extends BaseEntity<Long> {
+    private static final String EXAM_QUESTION_ID = "exam_question_id";
+    private static final String ANSWER = "answer";
+    private static final String MAX_SCORE = "max_score";
+    private static final String SCORE = "score";
+
+
+    @Column(name = EXAM_QUESTION_ID)
     private long examQuestionId;
 
+    @Column(name = ANSWER, length = 2000)
     private String answer;
 
+    @Column(name = MAX_SCORE)
     private float maxScore;
 
+    @Column(name = SCORE)
     private float score;
 
     public StudentQuestionAnswer(ExamQuestion question) {

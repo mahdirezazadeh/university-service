@@ -4,6 +4,8 @@ import ir.mahdi.universityservice.domain.Course;
 import ir.mahdi.universityservice.domain.base.Question;
 import ir.mahdi.universityservice.service.ExamQuestionService;
 import ir.mahdi.universityservice.service.QuestionService;
+import ir.mahdi.universityservice.service.StudentExamAnswerService;
+import ir.mahdi.universityservice.service.StudentQuestionAnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +22,10 @@ public class QuestionRestController {
     private final ExamQuestionService examQuestionService;
 
     private final QuestionService questionService;
+
+    private final StudentExamAnswerService examAnswerService;
+
+    private final StudentQuestionAnswerService questionAnswerService;
 
 
     @PreAuthorize("hasRole('teacher')")
@@ -42,5 +48,20 @@ public class QuestionRestController {
     @PreAuthorize("hasRole('teacher')")
     public List<Question<?, ?>> getQuestionBankByExamId(Course course) {
         return questionService.findQuestionsByExam(course);
+    }
+
+
+    @PreAuthorize("hasRole('student')")
+    @PostMapping("/question/save-answer")
+    public HttpStatus setQuestionAnswer(@RequestParam long studentExamAnswerId, @RequestParam long questionId, @RequestParam String studentAnswer) {
+        try {
+            questionAnswerService.saveAnswer(studentExamAnswerId, questionId, studentAnswer);
+            return HttpStatus.ACCEPTED;
+        } catch (RuntimeException e) {
+            return HttpStatus.FORBIDDEN;
+        } catch (Exception e) {
+            return HttpStatus.BAD_REQUEST;
+        }
+
     }
 }

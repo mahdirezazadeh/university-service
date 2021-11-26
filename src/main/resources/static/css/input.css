@@ -159,10 +159,18 @@
 .choiceGroup {
     /*position: relative;*/
     /*margin: 45px 0;*/
-    flex-direction: column;
+    flex-direction: row;
     /*left: -10px;*/
 }
 
 .choiceRadio {
     margin-top: 20px;
+}
+
+.choiceAnswer {
+    margin-right: 20px;
+}
+
+.choices {
+    flex-direction: column;
 }
