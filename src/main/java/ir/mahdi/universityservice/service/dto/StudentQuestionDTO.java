@@ -14,14 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentQuestionDTO extends BaseDTO<Long> {
-    private float score;
+    private float maxScore;
     private String question;
     private String studentAnswer;
     private String questionType;
     private List<String> choices = new ArrayList<>();
 
-    public StudentQuestionDTO(float score, String question, String studentAnswer) {
-        this.score = score;
+    public StudentQuestionDTO(float maxScore, String question, String studentAnswer) {
+        this.maxScore = maxScore;
         this.question = question;
         this.studentAnswer = studentAnswer;
     }
