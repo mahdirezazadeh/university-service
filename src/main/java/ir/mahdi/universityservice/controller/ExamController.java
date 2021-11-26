@@ -146,6 +146,12 @@ public class ExamController {
                     studentQuestionMapper.
                             convertListQuestionToDTOForTeacher(studentExamAnswer.getStudentAnswers());
 
+            float examScore = studentQuestionMapper.calculateExamScore(studentQuestionDTOS);
+
+            studentExamAnswer.setExamScore(examScore);
+            studentExamAnswerService.save(studentExamAnswer);
+
+
             model.addAttribute("questions", studentQuestionDTOS);
             model.addAttribute("studentExamAnswerId", examAnswerId);
 

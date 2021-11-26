@@ -27,6 +27,8 @@ public class StudentExamAnswer extends BaseEntity<Long> {
     @ManyToOne
     private Student student;
 
+    private float examScore = -1;
+
     @Column(name = END_TIME)
     private LocalDateTime endTime;
 

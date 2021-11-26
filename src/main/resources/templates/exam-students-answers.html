@@ -40,6 +40,7 @@
 
 <dev class="container borderradius10px " id="mainDiv">
 
+    <h1 class="formh1">Students Answer</h1>
 
     <hr class="hr">
     <!-- </dev> -->
@@ -53,8 +54,8 @@
             <span class="fromTo user" th:text="${user.getStudentUsername()}"></span>
         </dev>
         <dev class="container ticketDateTime">
-            <span th:text="${'Exam Id: '+user.getExamId()}"></span>
-            <span th:text="${'Exam Answer ID: '+user.getExamId()}"></span>
+            <span th:if="${user.getExamScore()!=-1}" th:text="${'score:'+ user.getExamScore()}"></span>
+            <!--            <span th:text="${'Exam Answer ID: '+user.getExamId()}"></span>-->
         </dev>
     </a>
 </dev>

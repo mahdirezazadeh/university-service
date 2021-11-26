@@ -87,4 +87,13 @@ public class StudentQuestionMapper {
         }
         return studentQuestionDTOS;
     }
+
+    public float calculateExamScore(List<StudentQuestionDTO> studentQuestionDTOS) {
+        float examScore = 0;
+        for (StudentQuestionDTO studentQuestionDTO : studentQuestionDTOS
+        ) {
+            examScore += studentQuestionDTO.getScore();
+        }
+        return examScore;
+    }
 }

@@ -19,4 +19,5 @@ public class StudentExamAnswersDTO extends BaseDTO<Long> {
     private long examId;
     private long examAnswerId;
     private List<String> answers;
+    private float examScore;
 }
