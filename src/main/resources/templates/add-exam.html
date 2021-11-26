@@ -48,7 +48,8 @@
                    th:text="${error}">Description</p>
             </div>
             <div class="group">
-                <input class="input" id="endDate" required="required" th:field="*{duration}" type="number"/><span
+                <input class="input" id="endDate" min="1" required="required" step="1" th:field="*{duration}"
+                       type="number"/><span
                     class="highlight"></span><span class="bar"></span>
                 <label class="label">Duration</label>
             </div>

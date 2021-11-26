@@ -74,8 +74,8 @@
             </div>
             <div class="group">
                 <input class="input" id="endDate" required="required" th:field="*{duration}"
-                       th:value="${exam.getDuration()}" type="number"/><span
-                    class="highlight"></span><span class="bar"></span>
+                       min="1" step="1" th:value="${exam.getDuration()}" type="number"/>
+                <span class="highlight"></span><span class="bar"></span>
                 <label class="label">Duration</label>
             </div>
             <p th:each="error : ${#fields.errors('duration')}"
