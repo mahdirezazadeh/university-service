@@ -98,6 +98,7 @@ $(document).ready(function () {
                 console.log("teacher changed!");
             }
         });
+        window.location.replace(`http://localhost:8080/`);
     });
 
 

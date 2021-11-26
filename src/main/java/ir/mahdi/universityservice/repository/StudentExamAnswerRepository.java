@@ -16,4 +16,7 @@ public interface StudentExamAnswerRepository extends JpaRepository<StudentExamAn
 
     @Query("select s from StudentExamAnswer s where s.exam = ?1 and s.student = ?2")
     StudentExamAnswer findByExamAndStudent(Exam exam, Student student);
+
+    @Query("select s from StudentExamAnswer s where s.exam = ?1")
+    List<StudentExamAnswer> findAllByExam(Exam exam);
 }

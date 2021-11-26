@@ -12,4 +12,6 @@ public interface StudentExamAnswerService extends BaseService<StudentExamAnswer,
     List<Exam> findExamsByStudentAndCourse(Student student, Course course);
 
     StudentExamAnswer startExam(Exam exam, String username);
+
+    List<StudentExamAnswer> findByExamId(long examId);
 }

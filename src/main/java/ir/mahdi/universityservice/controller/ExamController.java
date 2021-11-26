@@ -3,9 +3,11 @@ package ir.mahdi.universityservice.controller;
 import ir.mahdi.universityservice.domain.Exam;
 import ir.mahdi.universityservice.domain.StudentExamAnswer;
 import ir.mahdi.universityservice.domain.base.Question;
+import ir.mahdi.universityservice.mapper.StudentExamAnswerMapper;
 import ir.mahdi.universityservice.mapper.StudentQuestionMapper;
 import ir.mahdi.universityservice.service.ExamService;
 import ir.mahdi.universityservice.service.StudentExamAnswerService;
+import ir.mahdi.universityservice.service.dto.StudentExamAnswersDTO;
 import ir.mahdi.universityservice.service.dto.StudentQuestionDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,6 +37,8 @@ public class ExamController {
     private final QuestionRestController questionRestController;
 
     private final StudentQuestionMapper studentQuestionMapper;
+
+    private final StudentExamAnswerMapper studentExamAnswerMapper;
 
     /**
      * creates exam for course, authorized for teachers
@@ -121,6 +125,17 @@ public class ExamController {
         model.addAttribute("endTime", studentExamAnswer.getEndTime());
 
         return "start-exam";
+    }
+
+    @PreAuthorize("hasRole('teacher')")
+    @GetMapping("/exam-students-answers")
+    public String correctStudentsAnswers(@RequestParam long examId, Model model) {
+        List<StudentExamAnswer> studentExamAnswers = studentExamAnswerService.findByExamId(examId);
+        List<StudentExamAnswersDTO> studentExamAnswersDTOS = studentExamAnswerMapper.convertListStudentExamAnswerToDTO(studentExamAnswers);
+
+        model.addAttribute("studentExamAnswersDTOS", studentExamAnswersDTOS);
+
+        return "exam-students-answers";
     }
 
 }

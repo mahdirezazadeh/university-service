@@ -87,4 +87,12 @@ public class StudentExamAnswerServiceImpl extends BaseServiceImpl<StudentExamAns
         return studentExamAnswer;
 
     }
+
+    @Override
+    public List<StudentExamAnswer> findByExamId(long examId) {
+        Exam exam = examService.findById(examId).get();
+        List<StudentExamAnswer> studentExamAnswers = repository.findAllByExam(exam);
+        return studentExamAnswers;
+
+    }
 }

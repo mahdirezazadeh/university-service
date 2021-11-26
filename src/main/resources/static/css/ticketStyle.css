@@ -64,6 +64,21 @@
     align-items: center;
 }
 
+
+.width40pc {
+    width: 32%;
+    height: 50px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.width20pc {
+    width: 20%;
+    height: 50px;
+    justify-content: space-around;
+    align-items: center;
+}
+
 .questionText {
     padding: 1%;
     height: 50px;
