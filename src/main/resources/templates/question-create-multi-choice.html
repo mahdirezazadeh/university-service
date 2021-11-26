@@ -37,7 +37,7 @@
 
     <div class="wrapper">
         <form class="form" method="POST" th:action="@{/exam/create-question/multi-answer}" th:object="${question}">
-            <h1 class="formh1">Create Descriptive Question</h1>
+            <h1 class="formh1">Create Multiple Choice Question</h1>
             <hr class="formhrsep"/>
             <input name="examId" th:value="${examId}" type="hidden">
             <div class="group">
@@ -86,50 +86,10 @@
                                type="text"/>
                     </div>
                 </div>
-
-
-                <!--                <div th:each="choice, itemStat : *{choices}" class="container"-->
-                <!--                     th:id="${'choiceDiv'+__${itemStat.index}__}">-->
-                <!--                    <div class="container">-->
-                <!--                        <input checked class="choiceRadio" name="writeAnswer" type="radio"-->
-                <!--                               th:value="${'choice'+__${itemStat.index}__}">-->
-                <!--                    </div>-->
-                <!--                    <div class="container AnswerText">-->
-                <!--                        <input class="input" th:id="${'choice'+__${itemStat.index}__}"-->
-                <!--                               th:field="*{choices[__${itemStat.index}__]}" name="choice" required="required"-->
-                <!--                               type="text"/>-->
-                <!--                    </div>-->
-                <!--                </div>-->
-
-                <!--                <div class="container" id="choiceDiv0">-->
-                <!--                    <div class="container">-->
-                <!--                        <input checked class="choiceRadio" name="writeAnswer" type="radio" value="choice0">-->
-                <!--                    </div>-->
-                <!--                    <div class="container AnswerText">-->
-                <!--                        <input class="input" id="choice0" name="choice" required="required" type="text"/>-->
-                <!--                    </div>-->
-                <!--                </div>-->
-
-                <!--                <div class="container" id="choiceDiv1">-->
-                <!--                    <div class="container">-->
-                <!--                        <input class="choiceRadio" name="writeAnswer" type="radio" value="choice1">-->
-                <!--                    </div>-->
-                <!--                    <div class="container AnswerText">-->
-                <!--                        <input class="input" id="choice1" name="choice" required="required" type="text"/>-->
-                <!--                    </div>-->
-                <!--                    &lt;!&ndash;                    <div class="container AnswerText">&ndash;&gt;-->
-                <!--                    &lt;!&ndash;                        <input class="btn margintop10px marginleft10px" name="removeChoice" id="rmChoice${numberOfChoice}" type="button" value="remove"/>&ndash;&gt;-->
-                <!--                    &lt;!&ndash;                    </div>&ndash;&gt;-->
-                <!--                </div>-->
-
-
                 <div class="btn-box">
                     <button class="btn" id="addChoice" type="button">add choice</button>
                 </div>
             </div>
-
-            <!--            <p th:each="error : ${#fields.errors('answer')}"-->
-            <!--               th:text="${error}">Validation error</p>-->
 
             <div class="btn-box">
                 <button class="btn btn-submit" type="submit">submit</button>
