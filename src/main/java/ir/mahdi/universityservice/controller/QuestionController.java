@@ -145,8 +145,13 @@ public class QuestionController {
     @PreAuthorize("hasRole('teacher')")
     @PostMapping("/exam/question-bank/add-exam")
     public String addQuestionFromBank(@RequestParam long examId, @RequestParam long questionId, @RequestParam int score, Model model) {
-        examQuestionService.createQuestionByExamIdQuestionIdScore(examId, questionId, score);
-        return getQuestionsByExamId(examId, model);
+        try {
+            examQuestionService.createQuestionByExamIdQuestionIdScore(examId, questionId, score);
+            return getQuestionsByExamId(examId, model);
+        } catch (Exception e) {
+            model.addAttribute("message", "question have been added to exam before!");
+            return "error-page";
+        }
     }
 
 }
