@@ -25,4 +25,13 @@ public class StudentQuestionDTO extends BaseDTO<Long> {
         this.question = question;
         this.studentAnswer = studentAnswer;
     }
+
+    public boolean isAnswerSelected(int choice) {
+        try {
+            return
+                    Integer.parseInt(studentAnswer) == choice;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

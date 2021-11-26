@@ -22,8 +22,11 @@
 
     <script language="JavaScript" th:src="@{/js/course.js}" type="text/javascript"></script>
     <script language="JavaScript" th:src="@{/js/exam.js}" type="text/javascript"></script>
+    <script language="JavaScript" th:src="@{/js/timer.js}" type="text/javascript"></script>
 </head>
 
+
+<body class="container clomnflex">
 <dev class="container borderradius10px" id="heading">
     <dev class="container" id="loginbuttonDiv">
         <a class="marginleft10px" href="/sign-up">
@@ -40,10 +43,14 @@
     </dev>
 </dev>
 
-<body class="container">
+<div class="container timer" id="timerDiv">
+    <p id="timer"></p>
+</div>
+
 <dev class="container borderradius10px" id="mainDiv" th:if="${questions.size()>0}">
 
     <input name="studentExamAnswerId" th:value="${studentExamAnswerId}" type="hidden"/>
+    <input name="endTime" th:value="${endTime}" type="hidden"/>
 
     <h1 class="formh1">Question List</h1>
 
@@ -78,11 +85,22 @@
              th:if="${question.getQuestionType().equals('MultipleChoice')}">
             <div class="container choiceGroup">
                 <input class="container choiceAnswer"
-                       th:id="${'studentAnswerQId'+question.getId()+','+__${choiceIndex.index}__}"
-                       th:name="${'studentAnswerQId'+question.getId()}"
+                       checked
+                       th:id="${question.getId()+','+__${questionNumber.index}__+','+__${choiceIndex.index}__}"
                        th:value="${__${choiceIndex.index}__}"
-                       type="radio">
-                <label class="container" th:for="${'studentAnswerQId'+question.getId()+','+__${choiceIndex.index}__}"
+                       th:if="${question.isAnswerSelected(+__${choiceIndex.index}__)}"
+                       th:name="${'studentAnswerQIdC'+question.getId()}"
+                       type="radio"
+                >
+                <input class="container choiceAnswer"
+                       th:id="${question.getId()+','+__${questionNumber.index}__+','+__${choiceIndex.index}__}"
+                       th:if="${!question.isAnswerSelected(+__${choiceIndex.index}__)}"
+                       th:name="${'studentAnswerQIdC'+question.getId()}"
+                       th:value="${__${choiceIndex.index}__}"
+                       type="radio"
+                >
+                <label class="container"
+                       th:for="${question.getId()+','+__${questionNumber.index}__+','+__${choiceIndex.index}__}"
                        th:text="${choice}">label</label>
             </div>
             <div class="container AnswerText">

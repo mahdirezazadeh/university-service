@@ -191,3 +191,12 @@ a:-webkit-any-link {
 .hidden {
     visibility: hidden;
 }
+
+.timer {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 5px;
+    /*justify-self: end;*/
+    align-self: end;
+
+}

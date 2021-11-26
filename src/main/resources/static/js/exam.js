@@ -2,25 +2,47 @@ $(document).ready(function () {
 
     const answers = new Array();
 
+    const studentExamAnswerId = $('input[name="studentExamAnswerId"]').attr("value");
 
-    //js post function for choosing teacher
+    localStorage.setItem(`Answers${studentExamAnswerId}`, JSON.stringify(answers));
+
+
+    //js post function for saving descriptive Question
     $('input[name="saveQuestion"]').click(function () {
         let questionId = $(this).attr("id").split(',')[0];
         // console.log(questionId);
         let questionNumber = $(this).attr("id").split(',')[1];
         // console.log(questionNumber)
-        let studentExamAnswerId = $('input[name="studentExamAnswerId"]').attr("value");
-        // console.log(studentExamAnswerId)
         let studentAnswerName = 'studentAnswerQId' + questionId;
         // console.log(studentAnswerName)
         // console.log(`#${studentAnswerName}`);
         let studentAnswer = $(`#${studentAnswerName}`).val().trim();
         // console.log(studentAnswer)
-        answers[Number(questionNumber)] = [questionId, studentAnswer];
 
-        console.log(answers)
+        saveAnswer(questionId, studentAnswer, questionNumber);
+    });
 
-        localStorage.setItem(`Answers`, answers);
+
+    $('[name^=studentAnswerQIdC]').click(function () {
+        let questionId = $(this).attr("id").split(',')[0];
+        // console.log(questionId);
+        let questionNumber = $(this).attr("id").split(',')[1];
+        // console.log(questionNumber)
+        let studentAnswer = $(this).attr("id").split(',')[2];
+        // console.log(studentAnswer)
+
+        saveAnswer(questionId, studentAnswer, questionNumber);
+    });
+
+    function saveAnswer(questionId, studentAnswer, questionNumber) {
+
+        var Answers = JSON.parse(localStorage.getItem(`Answers${studentExamAnswerId}`));
+
+        Answers[Number(questionNumber)] = [questionId, studentAnswer];
+
+        console.log(Answers)
+
+        localStorage.setItem(`Answers${studentExamAnswerId}`, JSON.stringify(Answers));
 
         let token = $("meta[name='_csrf']").attr("content");
         let header = $("meta[name='_csrf_header']").attr("content");
@@ -41,7 +63,7 @@ $(document).ready(function () {
                 console.log("teacher changed!");
             }
         });
-    });
+    }
 
 })
 
