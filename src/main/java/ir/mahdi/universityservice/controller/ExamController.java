@@ -118,6 +118,7 @@ public class ExamController {
 
         model.addAttribute("studentExamAnswerId", studentExamAnswer.getId());
         model.addAttribute("questions", studentQuestionDTOS);
+        model.addAttribute("endTime", studentExamAnswer.getEndTime());
 
         return "start-exam";
     }

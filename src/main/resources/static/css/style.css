@@ -88,3 +88,7 @@ footer label {
     font-size: 20px;
     font-weight: bold;
 }
+
+.clomnflex {
+    flex-direction: column;
+}
