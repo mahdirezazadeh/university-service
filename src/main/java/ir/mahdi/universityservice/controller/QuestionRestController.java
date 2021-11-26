@@ -64,4 +64,15 @@ public class QuestionRestController {
         }
 
     }
+
+    @PreAuthorize("hasRole('student')")
+    @PostMapping("/question/save-answers")
+    public HttpStatus setQuestionAnswers(@RequestParam long studentExamAnswerId, @RequestParam String[][] sendingAnswers) {
+        System.out.println(studentExamAnswerId);
+        for (String[] answer : sendingAnswers) {
+            if (answer != null)
+                setQuestionAnswer(studentExamAnswerId, Long.parseLong(answer[0]), answer[1]);
+        }
+        return HttpStatus.ACCEPTED;
+    }
 }

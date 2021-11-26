@@ -65,6 +65,42 @@ $(document).ready(function () {
         });
     }
 
+    $('input[name="finishExam"]').click(function () {
+
+        var Answers = JSON.parse(localStorage.getItem(`Answers${studentExamAnswerId}`));
+
+        console.log(Answers)
+
+        var sendingAnswers = {};
+
+        let j = 0;
+        for (let i = 0; i < Answers.length; i++) {
+            if (Answers[i] != null) {
+                sendingAnswers[j] = Answers[i];
+                j = j + 1;
+            }
+        }
+
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+
+        $.ajax({
+            type: 'POST',
+            url: `http://localhost:8080/question/save-answers`,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            data: {
+                studentExamAnswerId: studentExamAnswerId,
+                sendingAnswers
+            },
+            success: function () {
+                console.log("teacher changed!");
+            }
+        });
+    });
+
+
 })
 
 
