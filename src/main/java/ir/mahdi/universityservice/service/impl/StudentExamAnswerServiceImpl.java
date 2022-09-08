@@ -2,6 +2,7 @@ package ir.mahdi.universityservice.service.impl;
 
 import ir.mahdi.universityservice.base.service.impl.BaseServiceImpl;
 import ir.mahdi.universityservice.domain.*;
+import ir.mahdi.universityservice.exceptions.ExamHaveBeenDoneByStudent;
 import ir.mahdi.universityservice.repository.StudentExamAnswerRepository;
 import ir.mahdi.universityservice.service.ExamQuestionService;
 import ir.mahdi.universityservice.service.ExamService;
@@ -20,18 +21,18 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class StudentExamAnswerServiceImpl extends BaseServiceImpl<StudentExamAnswer, Long, StudentExamAnswerRepository> implements StudentExamAnswerService {
 
+    @Autowired
     private StudentService studentService;
 
+    @Autowired
     private ExamService examService;
 
+    @Autowired
     private ExamQuestionService examQuestionService;
 
     @Autowired
-    public StudentExamAnswerServiceImpl(StudentExamAnswerRepository repository, StudentService studentService, ExamService examService, ExamQuestionService examQuestionService) {
+    public StudentExamAnswerServiceImpl(StudentExamAnswerRepository repository) {
         super(repository);
-        this.studentService = studentService;
-        this.examService = examService;
-        this.examQuestionService = examQuestionService;
     }
 
     @Override
@@ -61,7 +62,7 @@ public class StudentExamAnswerServiceImpl extends BaseServiceImpl<StudentExamAns
     @Override
     @Transactional
     public StudentExamAnswer startExam(Exam exam, String username) {
-        Student student = studentService.findByUsername(username).get();
+        Student student = studentService.findByUsername(username);
 
         StudentExamAnswer studentExamAnswer = repository.findByExamAndStudent(exam, student);
         if (studentExamAnswer != null && studentExamAnswer.getEndTime().isAfter(LocalDateTime.now()))
@@ -82,7 +83,7 @@ public class StudentExamAnswerServiceImpl extends BaseServiceImpl<StudentExamAns
         try {
             studentExamAnswer = save(studentExamAnswer);
         } catch (Exception e) {
-            throw new RuntimeException("Exam have been done by student!");
+            throw new ExamHaveBeenDoneByStudent();
         }
         return studentExamAnswer;
 

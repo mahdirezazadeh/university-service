@@ -3,13 +3,16 @@ package ir.mahdi.universityservice.service.impl;
 import ir.mahdi.universityservice.base.service.impl.BaseServiceImpl;
 import ir.mahdi.universityservice.domain.Course;
 import ir.mahdi.universityservice.domain.Exam;
-import ir.mahdi.universityservice.domain.ExamQuestion;
+import ir.mahdi.universityservice.domain.StudentExamAnswer;
 import ir.mahdi.universityservice.domain.base.Question;
+import ir.mahdi.universityservice.exceptions.ItemDoesNotExistException;
 import ir.mahdi.universityservice.repository.ExamRepository;
-import ir.mahdi.universityservice.service.ExamQuestionService;
+import ir.mahdi.universityservice.service.CourseService;
 import ir.mahdi.universityservice.service.ExamService;
 import ir.mahdi.universityservice.service.QuestionService;
+import ir.mahdi.universityservice.service.StudentExamAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +28,12 @@ public class ExamServiceImpl extends BaseServiceImpl<Exam, Long, ExamRepository>
 
     @Autowired
     private QuestionService questionService;
-
     @Autowired
-    private ExamQuestionService examQuestionService;
+    private CourseService courseService;
+    @Autowired
+    private ExamService examService;
+    @Autowired
+    private StudentExamAnswerService studentExamAnswerService;
 
     @Autowired
     public ExamServiceImpl(ExamRepository repository) {
@@ -80,13 +86,13 @@ public class ExamServiceImpl extends BaseServiceImpl<Exam, Long, ExamRepository>
     @Override
     @Transactional
     public Exam edit(long examId, Exam examAfter) {
-        Exam exam = repository.findById(examId).get();
+        Exam exam = repository.findById(examId).orElseThrow(() -> new ItemDoesNotExistException("Exam"));
         exam.setDescription(examAfter.getDescription());
         exam.setTitle(examAfter.getTitle());
         exam.setDuration(examAfter.getDuration());
         return repository.save(exam);
     }
-
+/*
     @Override
     @Transactional
     public ExamQuestion addQuestionByExamId(long examId, Question question, int score) {
@@ -94,7 +100,7 @@ public class ExamServiceImpl extends BaseServiceImpl<Exam, Long, ExamRepository>
         ExamQuestion examQuestion = new ExamQuestion(findById(examId).get(), question1, score);
         ExamQuestion examQuestion1 = examQuestionService.save(examQuestion);
         return examQuestion1;
-    }
+    }*/
 
     @Override
     public List<Exam> findAllByCourseAndNotExams(Course course, List<Exam> doneExams) {
@@ -102,6 +108,38 @@ public class ExamServiceImpl extends BaseServiceImpl<Exam, Long, ExamRepository>
         if (ids.isEmpty())
             ids.add(0L);
         return repository.findExamByCourseAndIdNotIn(course, ids);
+    }
+
+    @Override
+    public Course getCourseById(long courseId) {
+        return courseService.findById(courseId).orElseThrow(() -> new ItemDoesNotExistException("Course"));
+    }
+
+    @Override
+    public List<Question<?, ?>> getQuestionBankByExamId(long examId) {
+        Exam exam = examService.findById(examId).orElseThrow(() -> new ItemDoesNotExistException("Exam"));
+        return questionService.findQuestionsByCourse(exam.getCourse());
+    }
+
+    @Override
+    public StudentExamAnswer startExamForCurrentUser(Exam exam) {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return studentExamAnswerService.startExam(exam, username);
+    }
+
+    @Override
+    public List<StudentExamAnswer> findStudentExamAnswerByExamId(long examId) {
+        return studentExamAnswerService.findByExamId(examId);
+    }
+
+    @Override
+    public StudentExamAnswer findStudentExamAnswerById(long examAnswerId) {
+        return studentExamAnswerService.findById(examAnswerId).orElseThrow(() -> new ItemDoesNotExistException("Student Answer for exam"));
+    }
+
+    @Override
+    public void saveStudentExamAnswer(StudentExamAnswer studentExamAnswer) {
+        studentExamAnswerService.save(studentExamAnswer);
     }
 
 }

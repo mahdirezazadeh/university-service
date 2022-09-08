@@ -1,11 +1,11 @@
 package ir.mahdi.universityservice.controller;
 
 import ir.mahdi.universityservice.domain.Course;
+import ir.mahdi.universityservice.domain.Exam;
 import ir.mahdi.universityservice.domain.Teacher;
 import ir.mahdi.universityservice.service.TeacherService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,19 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Controller
 public class TeacherController {
 
     private final TeacherService teacherService;
-
-    private final RoleController roleController;
-
-    private final CourseRestController courseRestController;
-
-    private final ExamRestController examRestController;
 
     /**
      * for getting teacher sign up page
@@ -51,12 +44,12 @@ public class TeacherController {
     public String save(@Valid Teacher teacher, BindingResult result) {
         if (result.hasErrors())
             return "signup-teacher";
-        if (teacherService.findByUsername(teacher.getUsername()).isEmpty()) {
-            teacher.getRoles().add(roleController.findByName("teacher"));
-            teacherService.save(teacher);
+        try {
+            teacherService.signUpTeacher(teacher);
             return "signup-successfully";
+        } catch (Exception ex) {
+            return "signup-teacher";
         }
-        return "signup-teacher";
     }
 
     /**
@@ -68,9 +61,7 @@ public class TeacherController {
     @PreAuthorize("hasRole('teacher')")
     @GetMapping("/teacher/course/list")
     public String getCoursesByTeacher(Model model) {
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Teacher> teacher = teacherService.findByUsername(username);
-        List<Course> courses = courseRestController.getCoursesByTeacher(teacher.get());
+        List<Course> courses = teacherService.findCurrentUserTeacherCourses();
         model.addAttribute("courses", courses);
         return "teacher-courses";
     }
@@ -85,9 +76,10 @@ public class TeacherController {
     @PreAuthorize("hasRole('teacher')")
     @GetMapping("/teacher/course")
     public String getCourseById(@RequestParam long id, Model model) {
-        Optional<Course> course = courseRestController.getCourseById(id);
-        model.addAttribute("course", course.get());
-        model.addAttribute("exams", examRestController.getExamsByCourse(course.get()));
+        Course course = teacherService.loadCourseById(id);
+        List<Exam> exams = teacherService.loadExamsByCourse(course);
+        model.addAttribute("course", course);
+        model.addAttribute("exams", exams);
         return "teacher-course";
     }
 

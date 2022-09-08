@@ -10,6 +10,4 @@ public interface OperationService extends BaseService<Operation, Integer> {
     Optional<Operation> findByName(String name);
 
     void initData();
-
-    int count();
 }

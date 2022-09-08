@@ -3,12 +3,9 @@ package ir.mahdi.universityservice.controller;
 import ir.mahdi.universityservice.domain.Course;
 import ir.mahdi.universityservice.domain.Exam;
 import ir.mahdi.universityservice.domain.Student;
-import ir.mahdi.universityservice.service.ExamService;
-import ir.mahdi.universityservice.service.StudentExamAnswerService;
 import ir.mahdi.universityservice.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,23 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Controller
 public class StudentController {
 
     private final StudentService studentService;
-
-    private RoleController roleController;
-
-    private CourseRestController courseRestController;
-
-    private ExamRestController examRestController;
-
-    private StudentExamAnswerService studentExamAnswerService;
-
-    private ExamService examService;
 
     /**
      * a method for getting signup students page
@@ -56,16 +42,15 @@ public class StudentController {
      * @return sign-up successfully page if sign up done otherwise returns to sign up pgae
      */
     @PostMapping("/signup-student")
-    public String save(@ModelAttribute("student") @Valid Student student,
-                       BindingResult result) {
+    public String save(@ModelAttribute("student") @Valid Student student, BindingResult result) {
         if (result.hasErrors())
             return "signup-student";
-        if (studentService.findByUsername(student.getUsername()).isEmpty()) {
-            student.getRoles().add(roleController.findByName("student"));
-            studentService.save(student);
+        try {
+            studentService.signup(student);
             return "signup-successfully";
+        } catch (Exception ex) {
+            return "signup-student";
         }
-        return "signup-student";
     }
 
     /**
@@ -76,10 +61,8 @@ public class StudentController {
      */
     @PreAuthorize("hasRole('student')")
     @GetMapping("/student/course/list")
-    public String getCoursesByTeacher(Model model) {
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Student> student = studentService.findByUsername(username);
-        List<Course> courses = courseRestController.getCoursesByStudent(student.get());
+    public String getCoursesByStudent(Model model) {
+        List<Course> courses = studentService.findCoursesByCurrentStudent();
         model.addAttribute("courses", courses);
         return "student-courses";
     }
@@ -94,21 +77,10 @@ public class StudentController {
     @PreAuthorize("hasRole('student')")
     @GetMapping("/student/course")
     public String getCourseById(@RequestParam long id, Model model) {
-//        find student
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Student> student = studentService.findByUsername(username);
+        Course course = studentService.findCourseById(id);
+        List<Exam> undoneExams = studentService.findCurrentStudentUndoneExamsForCourse(course);
 
-//        find course
-        Optional<Course> course = courseRestController.getCourseById(id);
-
-//        find done exams by students(unavailable exams) for this course
-        List<Exam> doneExams = studentExamAnswerService.findExamsByStudentAndCourse(student.get(), course.get());
-
-//        find undone exams by students(available exams) for this course
-        List<Exam> undoneExams = examService.findAllByCourseAndNotExams(course.get(), doneExams);
-
-
-        model.addAttribute("course", course.get());
+        model.addAttribute("course", course);
         model.addAttribute("exams", undoneExams);
         return "student-course";
     }

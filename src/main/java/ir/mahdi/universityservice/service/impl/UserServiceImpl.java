@@ -47,11 +47,6 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     }
 
     @Override
-    public <P> P findUserByUsername(String username, Class<P> clazz) {
-        return repository.findUserByUsername(username, clazz);
-    }
-
-    @Override
     @Transactional
     public boolean activateUserById(Long id) {
         Optional<User> user = this.findById(id);
@@ -76,6 +71,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isUsernameAlreadyTaken(String username) {
+        Optional<User> userByUsername = repository.findUserByUsername(username);
+        return userByUsername.isPresent();
     }
 
 //    @Override

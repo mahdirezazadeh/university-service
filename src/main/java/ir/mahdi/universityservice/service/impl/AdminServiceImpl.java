@@ -2,10 +2,13 @@ package ir.mahdi.universityservice.service.impl;
 
 import ir.mahdi.universityservice.base.service.impl.BaseServiceImpl;
 import ir.mahdi.universityservice.domain.Admin;
+import ir.mahdi.universityservice.domain.base.User;
 import ir.mahdi.universityservice.domain.enumeration.Gender;
 import ir.mahdi.universityservice.repository.AdminRepository;
 import ir.mahdi.universityservice.service.AdminService;
 import ir.mahdi.universityservice.service.RoleService;
+import ir.mahdi.universityservice.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,11 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminRepository> implements AdminService {
 
     private final RoleService roleRepository;
@@ -27,6 +30,9 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
         super(repository);
         this.roleRepository = roleRepository;
     }
+
+    @Autowired
+    private UserService userService;
 
     @Override
     @Transactional
@@ -48,21 +54,11 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
-    public Optional<Admin> findByUsername(String username) {
-        return repository.findAdminByUsername(username);
-    }
-
-    @Override
-    public <P> P findAdminByUsername(String username, Class<P> clazz) {
-        return repository.findAdminByUsername(username, clazz);
-    }
-
-    @Override
     @Transactional
     public void initUsers() {
         if (repository.count() == 0) {
             try {
-                Admin admin = Admin.builder().build();
+                Admin admin = new Admin();
                 admin.setConfirmed(true);
                 admin.setUsername("adminMahdi");
                 admin.setFirstName("Mahdi");
@@ -76,11 +72,18 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
                 try {
                     repository.save(admin);
                 } catch (Exception e) {
-                    System.out.println("can not save initializer admin to database!");
+                    log.error("can not save initializer admin to database!");
+                    throw e;
                 }
             } catch (Exception e) {
-                System.out.println("Can not build initializer admin!");
+                log.error("Can not build initializer admin!");
+                throw e;
             }
         }
+    }
+
+    @Override
+    public List<User> loadAllUsers() {
+        return userService.findAll();
     }
 }

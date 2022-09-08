@@ -9,11 +9,9 @@ public interface UserService extends BaseService<User, Long> {
 
     Optional<User> findByUsername(String username);
 
-    <P> P findUserByUsername(String username, Class<P> clazz);
-
     boolean activateUserById(Long id);
 
     boolean deactivateUserById(Long id);
 
-//    List<User> findByUserSearchDTO(UserSearchDTO userSearch);
+    boolean isUsernameAlreadyTaken(String username);
 }

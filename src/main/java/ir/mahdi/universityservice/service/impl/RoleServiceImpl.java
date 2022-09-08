@@ -50,11 +50,6 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, Integer, RoleReposito
     }
 
     @Override
-    public int count() {
-        return (int) repository.count();
-    }
-
-    @Override
     @Transactional
     public void initData() {
         if (repository.count() == 0) {

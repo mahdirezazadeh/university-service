@@ -4,10 +4,9 @@ import ir.mahdi.universityservice.domain.Course;
 import ir.mahdi.universityservice.domain.Exam;
 import ir.mahdi.universityservice.domain.Student;
 import ir.mahdi.universityservice.domain.Teacher;
+import ir.mahdi.universityservice.exceptions.ItemDoesNotExistException;
 import ir.mahdi.universityservice.mapper.CourseMapperToCourseDTO;
 import ir.mahdi.universityservice.service.CourseService;
-import ir.mahdi.universityservice.service.StudentService;
-import ir.mahdi.universityservice.service.TeacherService;
 import ir.mahdi.universityservice.service.dto.CourseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -29,8 +27,6 @@ public class CourseController {
 
     private final CourseService courseService;
     private final CourseMapperToCourseDTO mapperToCourseDTO;
-    private final TeacherService teacherService;
-    private final StudentService studentService;
 
     /**
      * a method for getting course creation page
@@ -91,9 +87,9 @@ public class CourseController {
     @PreAuthorize("hasRole('admin')")
     @GetMapping("")
     public String getCourseById(@RequestParam long id, Model model) {
-        Optional<Course> course = courseService.findById(id);
         try {
-            model.addAttribute("course", course.get());
+            Course course = courseService.findById(id).orElseThrow(() -> new RuntimeException("Course"));
+            model.addAttribute("course", course);
 //            model.addAttribute("courseStudents", StudentController.getStudentsByCourseId(id));
 //            model.addAttribute("notInvolvedStudents", StudentController.getStudentsByNotCourseId(id));
             return "admin-course";
@@ -113,20 +109,22 @@ public class CourseController {
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/edit-teacher")
     public String editTeacher(@RequestParam long courseId, Model model) {
-        Optional<Course> course = courseService.findById(courseId);
-        if (course.isPresent()) {
-            List<Teacher> availableTeachers = teacherService.findAvailableTeachers();
-            model.addAttribute("courseId", course.get().getId());
-            try {
-                model.addAttribute("currentTeacherId", course.get().getTeacher().getId());
-            } catch (Exception e) {
+        try {
+            Course course = courseService.findById(courseId).orElseThrow(() -> new RuntimeException("Course does not exist!"));
+            List<Teacher> availableTeachers = courseService.findAvailableTeachers();
+            model.addAttribute("courseId", course.getId());
+            Teacher courseTeacher = course.getTeacher();
+            if (courseTeacher != null) {
+                model.addAttribute("currentTeacherId", courseTeacher.getId());
+            } else {
                 model.addAttribute("currentTeacherId", 0);
             }
             model.addAttribute("teachers", availableTeachers);
             return "edit-course-teacher";
+        } catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
+            return "error-page";
         }
-        model.addAttribute("message", "Course does not exist!");
-        return "error-page";
     }
 
     /**
@@ -139,17 +137,18 @@ public class CourseController {
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/edit-students")
     public String editStudents(@RequestParam long courseId, Model model) {
-        Optional<Course> course = courseService.findById(courseId);
-        if (course.isPresent()) {
-            model.addAttribute("courseId", course.get().getId());
-            Set<Student> studentsInCourse = course.get().getStudents();
+        try {
+            Course course = courseService.findById(courseId).orElseThrow(() -> new ItemDoesNotExistException("Course"));
+            Set<Student> studentsInCourse = course.getStudents();
+            List<Student> studentsOutCourse = courseService.findOtherStudents(studentsInCourse);
+            model.addAttribute("courseId", course.getId());
             model.addAttribute("studentsInCourse", studentsInCourse);
-            List<Student> studentsOutCourse = studentService.findOtherStudents(studentsInCourse);
             model.addAttribute("studentsOutCourse", studentsOutCourse);
             return "edit-course-students";
+        } catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
+            return "error-page";
         }
-        model.addAttribute("message", "Course does not exist!");
-        return "error-page";
     }
 
     /**

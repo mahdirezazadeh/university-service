@@ -57,11 +57,6 @@ public class ExamQuestionServiceImpl extends BaseServiceImpl<ExamQuestion, Long,
     }
 
     @Override
-    public List<Question> findExamQuestionsByExamId(long examId) {
-        return repository.findExamQuestionsByExamId(examId);
-    }
-
-    @Override
     @Transactional
     public ExamQuestion createQuestionByExamIdQuestionIdScore(long examId, long questionId, int score) {
         Exam exam = examService.findById(examId).get();

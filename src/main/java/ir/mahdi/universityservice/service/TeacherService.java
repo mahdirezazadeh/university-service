@@ -1,6 +1,8 @@
 package ir.mahdi.universityservice.service;
 
 import ir.mahdi.universityservice.base.service.BaseService;
+import ir.mahdi.universityservice.domain.Course;
+import ir.mahdi.universityservice.domain.Exam;
 import ir.mahdi.universityservice.domain.Teacher;
 
 import java.util.List;
@@ -10,7 +12,13 @@ public interface TeacherService extends BaseService<Teacher, Long> {
 
     Optional<Teacher> findByUsername(String username);
 
-    <P> P findTeacherByUsername(String username, Class<P> clazz);
-
     List<Teacher> findAvailableTeachers();
+
+    List<Course> findCurrentUserTeacherCourses();
+
+    Course loadCourseById(long id);
+
+    List<Exam> loadExamsByCourse(Course course);
+
+    void signUpTeacher(Teacher teacher);
 }

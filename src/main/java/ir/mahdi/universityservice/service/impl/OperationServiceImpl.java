@@ -58,9 +58,4 @@ public class OperationServiceImpl extends BaseServiceImpl<Operation, Integer, Op
         }
     }
 
-    @Override
-    public int count() {
-        return (int) repository.count();
-    }
-
 }

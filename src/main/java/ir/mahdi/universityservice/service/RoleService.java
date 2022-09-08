@@ -9,7 +9,5 @@ public interface RoleService extends BaseService<Role, Integer> {
 
     Optional<Role> findByName(String username);
 
-    int count();
-
     void initData();
 }
